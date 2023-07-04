@@ -35,28 +35,3 @@ class PDFLoader:
         )
 
         return splitter.split_documents(document)
-
-
-class JSONWriter:
-    def __init__(self, file_name: str) -> None:
-        self.file_name = file_name
-    
-    def writer(self, data: list) -> None:
-        if os.path.exists(self.file_name):
-            with open(self.file_name) as file:
-                listObj = json.load(file)
-
-            listObj.extend(data)
-            data = listObj
-
-        with open(self.file_name, 'w') as file:
-            json.dump(
-                data,
-                file, 
-                indent=4
-            )
-
-
-class LoggerHandle:
-    def qa_chain(self, chain_type: str, retriever, llm):
-        pass

@@ -20,14 +20,21 @@ OPENAI_API_KEY = ''
 SERPAPI_API_KEY = ''
 agent_ = None
 
-st.set_page_config(page_title="DocGPT")
-icon, title = st.columns([3, 20])
-with icon:
-    st.image('./img/chatbot.png')
-with title:
-    st.title('PDF Chatbot')
 st.session_state.openai_api_key = None
 st.session_state.serpapi_api_key = None
+
+
+def theme():
+    st.set_page_config(page_title="DocGPT")
+
+    icon, title = st.columns([3, 20])
+    with icon:
+        st.image('./img/chatbot.png')
+    with title:
+        st.title('PDF Chatbot')
+
+
+theme()
 
 
 def load_api_key() -> None:

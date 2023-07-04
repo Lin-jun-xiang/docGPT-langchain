@@ -7,6 +7,12 @@
 
 使用該工具至少須具備 `openai_api_key`，有關如何取得 key 可以前往[連結](https://platform.openai.com/)
 
+## How to develope a docGPT with streamlit?
+
+[Tutorial](./tutorial/)
+
+
+
 ## Introduction
 
 * `docGPT` 是基於 langchain 與 streamlit 開發的
