@@ -3,7 +3,6 @@
 (English)[README.md] | (中文版)[README.zh-TW.md]
 
 
-
 - 目錄
     - [Introduction](#introduction)
     - [What's LangChain?](#whats-langchain)
