@@ -1,14 +1,17 @@
 import os
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 os.environ['SERPAPI_API_KEY'] = ''
 
+import tempfile
+
 import langchain
+import streamlit as st
+from langchain.cache import InMemoryCache
+
 from agent import AgentHelper
 from docGPT import DocGPT
-from langchain.cache import InMemoryCache
 from model import PDFLoader
-
-import streamlit as st
 
 
 langchain.llm_cache = InMemoryCache()
@@ -18,7 +21,11 @@ SERPAPI_API_KEY = ''
 agent_ = None
 
 st.set_page_config(page_title="DocGPT")
-st.title('PDF Chatbot')
+icon, title = st.columns([3, 20])
+with icon:
+    st.image('./img/chatbot.png')
+with title:
+    st.title('PDF Chatbot')
 st.session_state.openai_api_key = None
 st.session_state.serpapi_api_key = None
 
@@ -60,12 +67,19 @@ load_api_key()
 
 
 with st.container():
-    upload_file = st.file_uploader('#### Choose a PDF file:', type='pdf')
+    upload_file = st.file_uploader('#### Upload a PDF file:', type='pdf')
     if upload_file:
-        path = os.path.join('uploaded', upload_file.name)
+        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        temp_file.write(upload_file.read())
+        temp_file_path = temp_file.name
 
-        docs = PDFLoader.load_documents(path)
+        docs = PDFLoader.load_documents(temp_file_path)
         docs = PDFLoader.split_documents(docs, chunk_size=2500, chunk_overlap=200)
+
+        temp_file.close()
+        if temp_file_path:
+            os.remove(temp_file_path)
+
         docGPT, docGPT_spec, calculate_tool, search_tool = None, None, None, None
 
         try:
@@ -82,13 +96,12 @@ with st.container():
             )
             docGPT_spec_tool = agent_.create_doc_chat(docGPT_spec)
         except Exception:
-            st.caption('#### ⚠️ :red[You have not pass OpenAPI key. (Or your api key cannot use.)]')
+            st.error('#### ⚠️ :red[You have not pass OpenAPI key. (Or your api key cannot use.)]')
             
         try:
             search_tool = agent_.get_searp_chain
         except Exception as e:
-            st.write(e)
-            st.caption('⚠️ You have not pass SEARPAPI key. (Or your api key cannot use.) Try Refresh')
+            st.warning('⚠️ You have not pass SEARPAPI key. (Or your api key cannot use.) Try Refresh')
 
         try:
             calculate_tool = agent_.get_calculate_chain
@@ -99,7 +112,6 @@ with st.container():
             ]
             agent_.initialize(tools)
         except Exception:
-            st.write(e)
             pass
 
 st.write('---')
@@ -109,6 +121,7 @@ with st.container():
     response = None
 
     if agent_ and query and query != '':
+            response = 'loading...'
             response = agent_.query(query)
 
     st.write('### :blue[Response]:')
