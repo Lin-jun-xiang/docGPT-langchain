@@ -1,17 +1,23 @@
 # docGPT
 
-(English)[README.md] | (中文版)[README.zh-TW.md]
-
+[English](./README.md) | [中文版](./README.zh-TW.md)
 
 - 目錄
     - [Introduction](#introduction)
     - [What's LangChain?](#whats-langchain)
-      - [Questions that ChatGPT cannot answer are handed over to LangChain for implementation!](#questions-that-chatgpt-cannot-answer-are-handed-over-to-langchain-for-implementation)
     - [How to Use docGPT?](#how-to-use-docgpt)
-    - [Why Use docGPT?](#why-use-docgpt)
     - [How to develope a docGPT with streamlit?](#how-to-develope-a-docgpt-with-streamlit)
 
+
+* 主要開發軟體與套件:
+    * `Python 3.8.6`
+    * `Langchain 0.0.218`
+    * `Streamlit 1.22.0`
+
+* 使用該工具至少須具備 `openai_api_key`，有關如何取得 key 可以前往[連結](https://platform.openai.com/)
+
 ---
+
 
 ### Introduction
 
@@ -32,19 +38,11 @@
         2. 允許與 LLM 模型進行交互
     * `streamlit`: streamlit 使 python 可以**快速、免費**的部署屬於你的應用程序
 
-* 主要開發軟體與套件:
-    * `Python 3.8.6`
-    * `Langchain 0.0.218`
-    * `Streamlit 1.22.0`
-
-* 使用該工具至少須具備 `openai_api_key`，有關如何取得 key 可以前往[連結](https://platform.openai.com/)
-
+---
 
 ### What's LangChain?
 
-* 有關 langchain 的介紹，建議查看官方文件、[Github源專案](https://github.com/hwchase17/langchain)
-
-#### Questions that ChatGPT cannot answer are handed over to LangChain for implementation!
+有關 langchain 的介紹，建議查看官方文件、[Github源專案](https://github.com/hwchase17/langchain)
 
 **ChatGPT 無法回答的問題，交給 Langchain 實現!**
 
@@ -71,6 +69,8 @@
 
 透過 langchain，我們可以創建屬於自己的 chatgpt 模型，它可以是通用型的模型，也可以是**企業化、商業化**的!
 
+---
+
 ### How to Use docGPT?
 
 * 前往[應用程序](https://docgpt-app.streamlit.app/)
@@ -84,16 +84,7 @@
 
 ![RGB_cleanup](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/img/docGPT.gif?raw=true)
 
-
-### Why Use docGPT?
-
-* 本專案開發的 `docGPT` 具有以下功能:
-  * 上傳 PDF
-  * 與GPT進行來回答覆，快速學習PDF內容
-  * 進行文檔總結
-  * 附加 **"math-llm"**，提供您進行**數學計算**相關問答 (chatgpt無法回答的問題)
-  * 附加 **"google-search"**，提供您進行**google搜尋** (chatgpt無法回答的問題)
-
+---
 
 ### How to develope a docGPT with streamlit?
 
@@ -104,12 +95,14 @@
 方法有如下兩種:
 
 * 於本地開發方式
-    1. `pip install -r requirements.txt`: 下載開發需求套件
-    2. `streamlit run ./app.py`: 於專案根目錄啟動服務
-    3. 開始體驗!
+    * `pip install -r requirements.txt`: 下載開發需求套件
+    * `streamlit run ./app.py`: 於專案根目錄啟動服務
+    * 開始體驗!
 
 * 使用 Streamlit Community Cloud 免費部屬、管理和共享應用程序
-    1. 將您的應用程序放在公共 GitHub 存儲庫中（並確保它有一個 `requirements.txt`！）
-    2. 登錄[share.streamlit.io](https://share.streamlit.io/)
-    3. 單擊“部署應用程序”，然後粘貼您的 GitHub URL
-    4. 完成部屬[應用程序](https://docgpt-app.streamlit.app//)
+    * 將您的應用程序放在公共 GitHub 存儲庫中（並確保它有一個 `requirements.txt`！）
+    * 登錄[share.streamlit.io](https://share.streamlit.io/)
+    * 單擊“部署應用程序”，然後粘貼您的 GitHub URL
+    * 完成部屬[應用程序](https://docgpt-app.streamlit.app//)
+
+<a href="#top">Back to top</a>
