@@ -1,13 +1,15 @@
+import asyncio
 import os
+import tempfile
+from functools import lru_cache
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 os.environ['SERPAPI_API_KEY'] = ''
 
-import tempfile
-
 import langchain
 import streamlit as st
 from langchain.cache import InMemoryCache
+from streamlit_chat import message
 
 from agent import AgentHelper
 from docGPT import DocGPT
@@ -102,13 +104,14 @@ with st.container():
                 chain_type='refine',
             )
             docGPT_spec_tool = agent_.create_doc_chat(docGPT_spec)
-        except Exception:
-            st.error('#### ⚠️ :red[You have not pass OpenAPI key. (Or your api key cannot use.)]')
-            
+        except Exception as e:
+            print(e)
+            pass
+
         try:
             search_tool = agent_.get_searp_chain
         except Exception as e:
-            st.warning('⚠️ You have not pass SEARPAPI key. (Or your api key cannot use.) Try Refresh')
+            st.warning('⚠️ You have not pass SEARPAPI key. (Or your api key cannot use.)')
 
         try:
             calculate_tool = agent_.get_calculate_chain
@@ -118,18 +121,45 @@ with st.container():
                 calculate_tool, search_tool
             ]
             agent_.initialize(tools)
-        except Exception:
-            pass
+        except Exception as e:
+            print(e)
+
+
+if not st.session_state['openai_api_key']:
+    st.error('⚠️ :red[You have not pass OpenAPI key. (Or your api key cannot use.)] Necessary')
 
 st.write('---')
 
-with st.container():
-    query = st.text_input('#### Question:')
-    response = None
+if 'response' not in st.session_state:
+    st.session_state['response'] = ['How can I help you?']
 
+if 'query' not in st.session_state:
+    st.session_state['query'] = ['Hi']
+
+
+@lru_cache(maxsize=20)
+async def get_response(query: str):
     if agent_ and query and query != '':
-            response = 'loading...'
-            response = agent_.query(query)
+        response = agent_.query(query)
+        return response
 
-    st.write('### :blue[Response]:')
-    st.write(response)
+
+query = st.text_input(
+    "#### Question:",
+    placeholder='Enter your question'
+)
+
+response_container = st.container()
+user_container = st.container()
+
+with user_container:
+    if query:
+        response = asyncio.run(get_response(query))
+        st.session_state.query.append(query)
+        st.session_state.response.append(response) 
+
+with response_container:
+    if st.session_state['response']:
+        for i in range(len(st.session_state['response'])-1, -1, -1):
+            message(st.session_state["response"][i], key=str(i))
+            message(st.session_state['query'][i], is_user=True, key=str(i) + '_user')

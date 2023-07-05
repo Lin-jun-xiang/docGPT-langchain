@@ -1,4 +1,5 @@
-langchain==0.0.222
+langchain==0.0.224
 openai==0.27.8
-streamlit==1.22.0
+streamlit==1.24.0
+streamlit_chat==0.1.1
 pymupdf

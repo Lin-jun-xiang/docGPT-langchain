@@ -1,4 +1,3 @@
-import logging
 import os
 from abc import ABC, abstractmethod
 
@@ -11,12 +10,8 @@ from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import Chroma
 
-from .prompt import SpecificationPromptor
-
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
-# TODO: ADD logger
-logger = logging.getLogger('./logs/openai_callback.log')
 
 
 class BaseQaChain(ABC):
@@ -97,6 +92,8 @@ class DocGPT:
         self.prompt_template = """
         Cite each reference using [Page Number] notation (every result has this number at the beginning).
         Only answer what is asked. The answer should be short and concise. Answer step-by-step.
+        If the content has sections, please summarize them in order and present them in a bulleted format.
+        For example, sequentially summarize the introduction, methods, results, and so on.
 
         {context}
 
@@ -107,12 +104,6 @@ class DocGPT:
             template=self.prompt_template,
             input_variables=['context', 'question']
         )
-
-    def set_customer_prompt(self, promptor: str='specification') -> None:
-        if promptor == 'specification':
-            spec_prompt = SpecificationPromptor()
-            self.prompt_template = spec_prompt.prompt_template
-            self.prompt.template = self.prompt_template
 
     def _helper_prompt(self, chain_type: str) -> None:
         # TODO: Bug helper
