@@ -89,7 +89,7 @@ with st.container():
         if temp_file_path:
             os.remove(temp_file_path)
 
-        docGPT, docGPT_spec, calculate_tool, search_tool = None, None, None, None
+        docGPT, calculate_tool, search_tool = None, None, None
 
         try:
             agent_ = AgentHelper()
@@ -99,14 +99,8 @@ with st.container():
             )
             docGPT_tool = agent_.create_doc_chat(docGPT)
 
-            docGPT_spec = DocGPT(docs=docs)
-            docGPT_spec.create_qa_chain(
-                chain_type='refine',
-            )
-            docGPT_spec_tool = agent_.create_doc_chat(docGPT_spec)
         except Exception as e:
-            print(e)
-            pass
+            st.write(e)
 
         try:
             search_tool = agent_.get_searp_chain
@@ -117,12 +111,12 @@ with st.container():
             calculate_tool = agent_.get_calculate_chain
 
             tools = [
-                docGPT_tool, docGPT_spec_tool,
-                calculate_tool, search_tool
+                docGPT_tool,
+                search_tool
             ]
             agent_.initialize(tools)
         except Exception as e:
-            print(e)
+            st.write(e)
 
 
 if not st.session_state['openai_api_key']:
@@ -139,10 +133,12 @@ if 'query' not in st.session_state:
 
 @lru_cache(maxsize=20)
 async def get_response(query: str):
-    if agent_ and query and query != '':
-        response = agent_.query(query)
-        return response
-
+    try:
+        if agent_.agent_ is not None:
+            response = agent_.query(query)
+            return response
+    except Exception as e:
+        pass
 
 query = st.text_input(
     "#### Question:",
@@ -153,7 +149,7 @@ response_container = st.container()
 user_container = st.container()
 
 with user_container:
-    if query:
+    if query and query != '':
         response = asyncio.run(get_response(query))
         st.session_state.query.append(query)
         st.session_state.response.append(response) 

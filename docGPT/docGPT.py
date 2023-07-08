@@ -9,6 +9,7 @@ from langchain.llms import OpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import Chroma
+from langchain.chat_models import ChatOpenAI
 
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -44,7 +45,7 @@ class RChain(BaseQaChain):
     @property
     def create_qa_chain(self) -> RetrievalQA:
         qa_chain = RetrievalQA.from_chain_type(
-            llm=OpenAI(temperature=0),
+            llm=self.llm,
             chain_type=self.chain_type,
             retriever=self.retriever,
             chain_type_kwargs=self.chain_type_kwargs
@@ -61,12 +62,6 @@ class CRChain(BaseQaChain):
     ) -> None:
         super().__init__(chain_type, retriever, llm)
 
-    def _get_chat_history(self, inputs) -> str:
-        res = []
-        for human, ai in inputs:
-            res.append(f"Human:{human}\nAI:{ai}")
-        return "\n".join(res)
-
     @property
     def create_qa_chain(self) -> ConversationalRetrievalChain:
         # TODO: cannot use conversation qa chain
@@ -75,11 +70,10 @@ class CRChain(BaseQaChain):
             return_messages=True
         )
         qa_chain = ConversationalRetrievalChain.from_llm(
-            llm=OpenAI(temperature=0),
+            llm=self.llm,
             chain_type=self.chain_type,
             retriever=self.retriever,
-            memory=memory,
-            get_chat_history=self._get_chat_history
+            memory=memory
         )
         return qa_chain    
 
@@ -88,11 +82,16 @@ class DocGPT:
     def __init__(self, docs):
         self.docs = docs
         self.qa_chain = None
+        self.llm = ChatOpenAI(
+            temperature=0.2,
+            max_tokens=2000,
+            model_name='gpt-3.5-turbo'
+        )
 
         self.prompt_template = """
-        Cite each reference using [Page Number] notation (every result has this number at the beginning).
-        Only answer what is asked. The answer should be short and concise. Answer step-by-step.
+        Only answer what is asked. Answer step-by-step.
         If the content has sections, please summarize them in order and present them in a bulleted format.
+        Utilize line breaks for better readability.
         For example, sequentially summarize the introduction, methods, results, and so on.
 
         {context}
@@ -154,14 +153,14 @@ class DocGPT:
             self.qa_chain = RChain(
                 chain_type=chain_type,
                 retriever=retriever,
-                llm=OpenAI(temperature=0),
+                llm=self.llm,
                 chain_type_kwargs=chain_type_kwargs
             ).create_qa_chain
         else:
             self.qa_chain = CRChain(
                 chain_type=chain_type,
                 retriever=retriever,
-                llm=OpenAI(temperature=0)
+                llm=self.llm
             ).create_qa_chain
 
     def run(self, query: str) -> str:

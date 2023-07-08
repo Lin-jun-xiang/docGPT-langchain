@@ -22,7 +22,11 @@
 
 ### Introduction
 
-* Easily build an AI model using Langchain and Streamlit.
+* Project Purpose:
+    * Build a powerful "LLM" model using langchain and streamlit, **enabling your LLM model to do what ChatGPT can't**:
+      * **Connect with external data** by using PDF documents as an example, allowing the LLM model to understand the uploaded files through RetrievalQA techniques.
+      * Integrate LLM with other tools to achieve **internet connectivity**. For instance, using Serp API as an example, leverage the Langchain framework to enable querying the model for **current issues** (i.e., **Google search engine**).
+      * Integrate LLM with the **LLM Math model**, enabling accurate **mathematical calculations**.
 
 * This project consists of three main components:
     * [`DataConnection`](../model/data_connection.py): Allows LLM to communicate with external data, i.e., read PDF files and perform text segmentation for large PDFs to avoid exceeding OPENAI's 4000-token limit.
@@ -34,17 +38,16 @@
 
 
 * `docGPT` is developed based on **Langchain** and **Streamlit**.
-    * `Langchain`: LangChain is a framework for **developing applications supported by language models**. It supports the following applications:
-        1. Connecting LLM models with external data sources.
-        2. Allowing interaction with LLM models.
-    * `Streamlit`: Streamlit enables fast and free deployment of Python applications.
-
 
 ---
 
 ### What's LangChain?
 
-For an introduction to LangChain, it is recommended to refer to the official documentation or the GitHub [repository](https://github.com/hwchase17/langchain).
+* LangChain is a framework for developing applications powered by language models. It supports the following applications:
+    1. Connecting LLM models with external data sources.
+    2. Enabling interactions with LLM models.
+
+* For an introduction to LangChain, it is recommended to refer to the official documentation or the GitHub [repository](https://github.com/hwchase17/langchain).
 
 **Questions that ChatGPT cannot answer can be handled by Langchain!**
 

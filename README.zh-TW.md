@@ -18,11 +18,13 @@
 
 ---
 
-
 ### Introduction
 
-* 使用 langchain、streamlit 輕鬆搭建出一個 AI 模型
-
+* 專案目的:
+    * 使用 langchain、streamlit 輕鬆搭建出一個強大的 "LLM" 模型，**讓您的 LLM 模型能夠實現 ChatGPT 做不到的事**:
+      * 與**外部數據連接**，本專案以 **PDF 文件**為例子，透過 RetrievalQA 技術讓 LLM 理解您上傳的文件
+      * 整合 LLM 與其他工具，達到**連網功能**，本專案以 Serp API 為例子，透過 Langchain 框架，使您能夠詢問模型有關**現今問題** (即 **google 搜尋引擎**)
+      * 整合 LLM 與 **LLM Math 模型**，使您能夠讓模型準確做到**數學計算**
 * 本專案的設計架構主要有三個元素:
     * [`DataConnection`](../model/data_connection.py): 讓 LLM 負責與外部數據溝通，也就是讀取 PDF 檔案，並針對大型 PDF 進行文本切割，避免超出 OPENAI 4000 tokens 的限制
     * [`docGPT`](../docGPT/): 該元素就是讓模型了解 PDF 內容的核心，包含將 PDF 文本進行向量嵌入、建立 langchain 的 retrievalQA 模型。詳細簡介請[參考](https://python.langchain.com/docs/modules/chains/popular/vector_db_qa)
@@ -30,19 +32,17 @@
         * `SerpAI`: 當使用者問題屬於 "**現今問題**"，使用該工具可以進行 **google 搜索**
         * `llm_math_chain`: 當使用者問題屬於 "**數學計算**"，使用該工具可以進行 數學計算
         * `docGPT`: 當使用者詢問有關 PDF 文檔內容，使用該工具可以進行解答 (該工具也是我們透過 retrievalQA 建立的)
-
-
 * `docGPT` 是基於 **langchain** 與 **streamlit** 開發的
-    * `langchain`: LangChain 是一個用於**開發由語言模型支持的應用程序的框架**。它支持以下應用程序
-        1. 可以將 LLM 模型與外部數據源進行連接
-        2. 允許與 LLM 模型進行交互
-    * `streamlit`: streamlit 使 python 可以**快速、免費**的部署屬於你的應用程序
 
 ---
 
 ### What's LangChain?
 
-有關 langchain 的介紹，建議查看官方文件、[Github源專案](https://github.com/hwchase17/langchain)
+* LangChain 是一個用於**開發由語言模型支持的應用程序的框架**。它支持以下應用程序
+        1. 可以將 LLM 模型與外部數據源進行連接
+        2. 允許與 LLM 模型進行交互
+* 有關 langchain 的介紹，建議查看官方文件、[Github源專案](https://github.com/hwchase17/langchain)
+
 
 **ChatGPT 無法回答的問題，交給 Langchain 實現!**
 
