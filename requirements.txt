@@ -1,5 +1,7 @@
-langchain==0.0.224
+langchain==0.0.228
 openai==0.27.8
-streamlit==1.24.0
+streamlit==1.24.1
 streamlit_chat==0.1.1
 pymupdf
+chromadb
+tiktoken

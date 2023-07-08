@@ -47,7 +47,6 @@ class AgentHelper:
             func=docGPT.run,
             description="""
             useful for when you need to answer questions from the context of PDF,
-            especially ask the specification of display.
             """
         )
         return tool
