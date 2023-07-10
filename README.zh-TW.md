@@ -41,6 +41,7 @@
 * LangChain 是一個用於**開發由語言模型支持的應用程序的框架**。它支持以下應用程序
     1. 可以將 LLM 模型與外部數據源進行連接
     2. 允許與 LLM 模型進行交互
+
 * 有關 langchain 的介紹，建議查看官方文件、[Github源專案](https://github.com/hwchase17/langchain)
 
 
