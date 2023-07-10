@@ -1,4 +1,3 @@
-import asyncio
 import os
 import tempfile
 from functools import lru_cache
@@ -67,7 +66,7 @@ def load_api_key() -> None:
                 type="password",
                 key='SERPAPI_API_KEY'
             )
-            st.session_state.serpai_api_key = SERPAPI_API_KEY
+            st.session_state.serpapi_api_key = SERPAPI_API_KEY
 
         os.environ['SERPAPI_API_KEY'] = SERPAPI_API_KEY
 
@@ -100,12 +99,12 @@ with st.container():
             docGPT_tool = agent_.create_doc_chat(docGPT)
 
         except Exception as e:
-            pass
+            print(e)
 
         try:
             search_tool = agent_.get_searp_chain
         except Exception as e:
-            pass
+            print(e)
 
         try:
             calculate_tool = agent_.get_calculate_chain
@@ -120,10 +119,10 @@ with st.container():
 
 
 if not st.session_state['openai_api_key']:
-    st.error('⚠️ :red[You have not pass OpenAPI key. (Or your api key cannot use.)] Necessary')
+    st.error('⚠️ :red[You have not pass OpenAPI key. (Or your api key cannot use.)] Necessary Pass')
 
 if not st.session_state['serpapi_api_key']:
-    st.warning('⚠️ You have not pass SEARPAPI key. (Or your api key cannot use.)')
+    st.warning('⚠️ You have not pass SEARPAPI key. (You cannot ask current events.)')
 
 st.write('---')
 
@@ -135,13 +134,13 @@ if 'query' not in st.session_state:
 
 
 @lru_cache(maxsize=20)
-async def get_response(query: str):
+def get_response(query: str):
     try:
         if agent_.agent_ is not None:
             response = agent_.query(query)
             return response
     except Exception as e:
-        pass
+        print(e)
 
 query = st.text_input(
     "#### Question:",
@@ -153,7 +152,7 @@ user_container = st.container()
 
 with user_container:
     if query and query != '':
-        response = asyncio.run(get_response(query))
+        response = get_response(query)
         st.session_state.query.append(query)
         st.session_state.response.append(response) 
 
