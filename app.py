@@ -96,7 +96,10 @@ with st.container():
             docGPT.create_qa_chain(
                 chain_type='refine',
             )
+
             docGPT_tool = agent_.create_doc_chat(docGPT)
+            calculate_tool = agent_.get_calculate_chain
+            llm_tool = agent_.create_llm_chain()
 
         except Exception as e:
             print(e)
@@ -107,11 +110,10 @@ with st.container():
             print(e)
 
         try:
-            calculate_tool = agent_.get_calculate_chain
-
             tools = [
                 docGPT_tool,
-                search_tool
+                search_tool,
+                llm_tool
             ]
             agent_.initialize(tools)
         except Exception as e:
