@@ -98,7 +98,6 @@ with st.container():
                 chain_type='refine',
             )
             docGPT_tool = agent_.create_doc_chat(docGPT)
-
         except Exception as e:
             st.write(e)
 
