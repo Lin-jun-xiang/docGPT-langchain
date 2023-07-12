@@ -5,3 +5,4 @@ streamlit_chat==0.1.1
 pymupdf
 chromadb
 tiktoken
+google-search-results==2.4.2

@@ -5,8 +5,9 @@ import openai
 from langchain import LLMMathChain, SerpAPIWrapper
 from langchain.agents import AgentType, Tool, initialize_agent
 from langchain.callbacks import get_openai_callback
+from langchain.chains import LLMChain
 from langchain.llms import OpenAI
-
+from langchain.prompts import PromptTemplate
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 os.environ['SERPAPI_API_KEY'] = os.getenv('SERPAPI_API_KEY')
@@ -51,6 +52,20 @@ class AgentHelper:
         )
         return tool
 
+    def create_llm_chain(self) -> Tool:
+        """Add a llm tool"""
+        prompt = PromptTemplate(
+            input_variables = ['query'],
+            template = '{query}'
+        )
+        llm_chain = LLMChain(llm=self.llm, prompt = prompt)
+
+        tool = Tool(
+            name='LLM',
+            func=llm_chain.run,
+            description='useful for general purpose queries and logic'
+        )
+        return tool
     def initialize(self, tools):
         for tool in tools:
             if isinstance(tool, Tool):
@@ -66,6 +81,9 @@ class AgentHelper:
     def query(self, query: str) -> Optional[str]:
         response = None
         with get_openai_callback() as callback:
+            # TODO: The true result will hide in 'Observation'
+            # https://github.com/hwchase17/langchain/issues/4916
+            # https://python.langchain.com/docs/modules/agents/how_to/intermediate_steps
             response = self.agent_.run(query)
             print(callback)
         return response

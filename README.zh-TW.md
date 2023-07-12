@@ -7,7 +7,7 @@
     - [What's LangChain?](#whats-langchain)
     - [How to Use docGPT?](#how-to-use-docgpt)
     - [How to develope a docGPT with streamlit?](#how-to-develope-a-docgpt-with-streamlit)
-
+    - [Advanced - How to build a better model in langchain](#advanced---how-to-build-a-better-model-in-langchain)
 
 * 主要開發軟體與套件:
     * `Python 3.8.6`
@@ -26,7 +26,7 @@
       * 整合 LLM 與其他工具，達到**連網功能**，本專案以 Serp API 為例子，透過 Langchain 框架，使您能夠詢問模型有關**現今問題** (即 **google 搜尋引擎**)
       * 整合 LLM 與 **LLM Math 模型**，使您能夠讓模型準確做到**數學計算**
 * 本專案的設計架構主要有三個元素:
-    * [`DataConnection`](../model/data_connection.py): 讓 LLM 負責與外部數據溝通，也就是讀取 PDF 檔案，並針對大型 PDF 進行文本切割，避免超出 OPENAI 4000 tokens 的限制
+    * [`DataConnection`](../model/data_connection.py): 讓 LLM 負責與外部數據溝通，也就是讀取 PDF 檔案，並針對大型 PDF 進行文本切割，避免超出 OPENAI 4096 tokens 的限制
     * [`docGPT`](../docGPT/): 該元素就是讓模型了解 PDF 內容的核心，包含將 PDF 文本進行向量嵌入、建立 langchain 的 retrievalQA 模型。詳細簡介請[參考](https://python.langchain.com/docs/modules/chains/popular/vector_db_qa)
     * [`agent`](../agent/agent.py): 負責管理模型所用到的工具、並根據使用者提問**自動判斷**使用何種工具處理，工具包含
         * `SerpAI`: 當使用者問題屬於 "**現今問題**"，使用該工具可以進行 **google 搜索**
@@ -39,14 +39,15 @@
 ### What's LangChain?
 
 * LangChain 是一個用於**開發由語言模型支持的應用程序的框架**。它支持以下應用程序
-        1. 可以將 LLM 模型與外部數據源進行連接
-        2. 允許與 LLM 模型進行交互
+    1. 可以將 LLM 模型與外部數據源進行連接
+    2. 允許與 LLM 模型進行交互
+
 * 有關 langchain 的介紹，建議查看官方文件、[Github源專案](https://github.com/hwchase17/langchain)
 
 
 **ChatGPT 無法回答的問題，交給 Langchain 實現!**
 
-在這邊，作者將簡單介紹 langchain 與 chatgpt 之間的差異，相信您理解以下例子，你會對 langchain 這個開源項目感到震驚!
+在這邊，作者將簡單介紹 langchain 與 chatgpt 之間的差異，相信您理解以下例子，您會對 langchain 這個開源項目感到震驚!
 
 >今天可以想像 chatgpt 無法回答數學問題、超過 2020 年後的事情(例如2023年貴國總統是誰?)
 >
@@ -88,7 +89,7 @@
 
 ### How to develope a docGPT with streamlit?
 
-手把手教學，讓你快速建立一個屬於自己的 chatGPT !
+手把手教學，讓您快速建立一個屬於自己的 chatGPT !
 
 首先請進行 `git clone https://github.com/Lin-jun-xiang/docGPT-streamlit.git`
 
@@ -104,5 +105,67 @@
     * 登錄[share.streamlit.io](https://share.streamlit.io/)
     * 單擊“部署應用程序”，然後粘貼您的 GitHub URL
     * 完成部屬[應用程序](https://docgpt-app.streamlit.app//)
+
+---
+
+### Advanced - How to build a better model in langchain
+
+使用 Langchain 搭建 docGPT，您可以注意以下幾個點，這些小細節能夠讓您的模型更強大:
+
+1. **Language Model**
+   
+   使用適當的 LLM Model，會讓您事半功倍，例如您可以選擇使用 OpenAI 的 `gpt-3.5-turbo` (預設是 `text-davinci-003`):
+
+   ```python
+   # ./docGPT/docGPT.py
+   llm = ChatOpenAI(
+    temperature=0.2,
+    max_tokens=2000,
+    model_name='gpt-3.5-turbo'
+   ) 
+   ```
+
+   請注意，模型之間並沒有最好與最壞，您需要多試幾個模型，才會發現最適合自己案例的模型，更多 OpenAI model 請[參考](https://platform.openai.com/docs/models)
+   
+   (部分模型可以使用 16,000 tokens!)
+
+2. **PDF Loader**
+
+    在 Python 中有許多解析 PDF 文字的 Loader，每個 Loader 各有優缺點，以下整理三個作者用過的
+    
+    ([Langchain官方介紹](https://python.langchain.com/docs/modules/data_connection/document_loaders/how_to/pdf)):
+
+    * `PyPDF`: 簡單易用
+    * `PyMuPDF`: 讀取文件**速度非常快速**，除了能解析文字，還能取得頁數、文檔日期...等 MetaData。
+    * `PDFPlumber`: 能夠解析出**表格內部文字**，使用方面與 `PyMuPDF` 相似，皆能取得 MetaData，但是解析時間較長。
+
+    如果您的文件具有多個表格，且重要資訊存在表格中，建議您嘗試 `PDFPlumber`，它會給您意想不到的結果!
+    請不要忽略這個細節，因為沒有正確解析出文件中的文字，即使 LLM 模型再強大也無用! 
+
+3. **Tracking Token Usage**
+
+    這個並不能讓模型強大，但是能讓您清楚知道 QA Chain 的過程中，您使用的 tokens、openai api key 的使用量。
+
+    當您使用 `chain.run` 時，可以嘗試用 langchain 提供的 [方法](https://python.langchain.com/docs/modules/model_io/models/llms/how_to/token_usage_tracking):
+
+    ```python
+    from langchain.callbacks import get_openai_callback
+
+    with get_openai_callback() as callback:
+        response = self.qa_chain.run(query)
+
+    print(callback)
+
+    # Result of print
+    """
+    chain...
+    ...
+    > Finished chain.
+    Total Tokens: 1506
+    Prompt Tokens: 1350
+    Completion Tokens: 156
+    Total Cost (USD): $0.03012
+    """
+    ```
 
 <a href="#top">Back to top</a>
