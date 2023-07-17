@@ -88,7 +88,7 @@ with st.container():
         if temp_file_path:
             os.remove(temp_file_path)
 
-        docGPT_tool, calculate_tool, search_tool = None, None, None
+        docGPT_tool, calculate_tool, search_tool, llm_tool = None, None, None, None
 
         try:
             agent_ = AgentHelper()
@@ -117,7 +117,7 @@ with st.container():
             ]
             agent_.initialize(tools)
         except Exception as e:
-            st.write(e)
+            pass
 
 
 if not st.session_state['openai_api_key']:

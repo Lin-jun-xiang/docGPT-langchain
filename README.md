@@ -7,7 +7,7 @@
     - [What's LangChain?](#whats-langchain)
     - [How to Use docGPT?](#how-to-use-docgpt)
     - [How to Develop a docGPT with Streamlit?](#how-to-develop-a-docgpt-with-streamlit)
-
+    - [Advanced - How to build a better model in langchain](#advanced---how-to-build-a-better-model-in-langchain)
 
 * Main Development Software and Packages:
     * `Python 3.8.6`
@@ -106,6 +106,68 @@ There are two methods:
     * Log in to [share.streamlit.io](https://share.streamlit.io/).
     * Click "Deploy an App" and paste your GitHub URL.
     * Complete the deployment of your [application](https://docgpt-app.streamlit.app/).
+
+---
+
+### Advanced - How to build a better model in langchain
+
+Using Langchain to build docGPT, you can pay attention to the following details that can make your model more powerful:
+
+1. **Language Model**
+
+    Choosing the right LLM Model can save you time and effort. For example, you can choose OpenAI's `gpt-3.5-turbo` (default is `text-davinci-003`):
+
+    ```python
+    # ./docGPT/docGPT.py
+    llm = ChatOpenAI(
+    temperature=0.2,
+    max_tokens=2000,
+    model_name='gpt-3.5-turbo'
+    )
+    ```
+
+    Please note that there is no best or worst model. You need to try multiple models to find the one that suits your use case the best. For more OpenAI models, please refer to the [documentation](https://platform.openai.com/docs/models).
+    
+    (Some models support up to 16,000 tokens!)
+
+2. **PDF Loader**
+
+    There are various PDF text loaders available in Python, each with its own advantages and disadvantages. Here are three loaders the authors have used:
+    
+    ([official Langchain documentation](https://python.langchain.com/docs/modules/data_connection/document_loaders/how_to/pdf))
+
+    * `PyPDF`: Simple and easy to use.
+    * `PyMuPDF`: Reads the document very **quickly** and provides additional metadata such as page numbers and document dates.
+    * `PDFPlumber`: Can **extract text within tables**. Similar to PyMuPDF, it provides metadata but takes longer to parse.
+
+    If your document contains multiple tables and important information is within those tables, it is recommended to try `PDFPlumber`, which may give you unexpected results!
+
+    Please do not overlook this detail, as without correctly parsing the text from the document, even the most powerful LLM model would be useless!
+
+3. **Tracking Token Usage**
+
+    This doesn't make the model more powerful, but it allows you to track the token usage and OpenAI API key consumption during the QA Chain process.
+
+    When using `chain.run`, you can try using the [method](https://python.langchain.com/docs/modules/model_io/models/llms/how_to/token_usage_tracking) provided by Langchain to track token usage here:
+
+    ```python
+    from langchain.callbacks import get_openai_callback
+
+    with get_openai_callback() as callback:
+        response = self.qa_chain.run(query)
+
+    print(callback)
+
+    # Result of print
+    """
+    chain...
+    ...
+    > Finished chain.
+    Total Tokens: 1506
+    Prompt Tokens: 1350
+    Completion Tokens: 156
+    Total Cost (USD): $0.03012
+    ```
 
 <a href="#top">Back to top</a>
  
