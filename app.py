@@ -88,7 +88,7 @@ with st.container():
         if temp_file_path:
             os.remove(temp_file_path)
 
-        docGPT, calculate_tool, search_tool = None, None, None
+        docGPT_tool, calculate_tool, search_tool = None, None, None
 
         try:
             agent_ = AgentHelper()

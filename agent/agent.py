@@ -66,6 +66,7 @@ class AgentHelper:
             description='useful for general purpose queries and logic'
         )
         return tool
+
     def initialize(self, tools):
         for tool in tools:
             if isinstance(tool, Tool):
