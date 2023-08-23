@@ -1,5 +1,6 @@
 import json
 import os
+from typing import Iterator
 
 from langchain.document_loaders import PyMuPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -7,15 +8,14 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 class PDFLoader:
     @staticmethod
-    def get_pdf_files(path: str) -> list:
-        if path.endswith('.pdf'):
-            return f'./PDF/uploaded/{path}'
-    
-        else:
-                file_names = os.listdir(f'./PDF/{path}')
-                pdf_files = [name for name in file_names if name.endswith('.pdf')]
-
-        return pdf_files
+    def get_pdf_files(path: str) -> Iterator[str]:
+        try:
+            yield from [
+                file_name for file_name in os.listdir(f'{path}')
+                if file_name.endswith('.pdf')
+            ]
+        except FileNotFoundError as e:
+            print(f'\033[31m{e}')
 
     @staticmethod
     def load_documents(pdf_file: str) -> PyMuPDFLoader:

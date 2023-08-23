@@ -14,7 +14,6 @@ from agent import AgentHelper
 from docGPT import DocGPT
 from model import PDFLoader
 
-
 langchain.llm_cache = InMemoryCache()
 
 OPENAI_API_KEY = ''
@@ -82,7 +81,7 @@ with st.container():
         temp_file_path = temp_file.name
 
         docs = PDFLoader.load_documents(temp_file_path)
-        docs = PDFLoader.split_documents(docs, chunk_size=2500, chunk_overlap=200)
+        docs = PDFLoader.split_documents(docs, chunk_size=2000, chunk_overlap=200)
 
         temp_file.close()
         if temp_file_path:
@@ -113,7 +112,8 @@ with st.container():
             tools = [
                 docGPT_tool,
                 search_tool,
-                llm_tool
+                # llm_tool, # This will cause agent confuse
+                calculate_tool
             ]
             agent_.initialize(tools)
         except Exception as e:

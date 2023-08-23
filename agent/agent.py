@@ -6,7 +6,7 @@ from langchain import LLMMathChain, SerpAPIWrapper
 from langchain.agents import AgentType, Tool, initialize_agent
 from langchain.callbacks import get_openai_callback
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -16,7 +16,11 @@ os.environ['SERPAPI_API_KEY'] = os.getenv('SERPAPI_API_KEY')
 class AgentHelper:
     """Add agent to help docGPT can be perfonm better."""
     def __init__(self) -> None:
-        self.llm = OpenAI(temperature=0)
+        self.llm = ChatOpenAI(
+            temperature=0.2,
+            max_tokens=6000,
+            model_name='gpt-3.5-turbo-16k'
+        )
         self.agent_ = None
         self.tools = []
 
@@ -32,7 +36,6 @@ class AgentHelper:
 
     @property
     def get_searp_chain(self) -> Tool:
-
         search = SerpAPIWrapper()
         tool = Tool(
             name='Search',
@@ -47,7 +50,7 @@ class AgentHelper:
             name='DocumentGPT',
             func=docGPT.run,
             description="""
-            useful for when you need to answer questions from the context of PDF,
+            useful for when you need to answer questions from the context of PDF
             """
         )
         return tool
@@ -58,12 +61,12 @@ class AgentHelper:
             input_variables = ['query'],
             template = '{query}'
         )
-        llm_chain = LLMChain(llm=self.llm, prompt = prompt)
+        llm_chain = LLMChain(llm=self.llm, prompt=prompt)
 
         tool = Tool(
             name='LLM',
             func=llm_chain.run,
-            description='useful for general purpose queries and logic'
+            description='useful for general purpose queries and logic.'
         )
         return tool
 

@@ -4,13 +4,11 @@ from abc import ABC, abstractmethod
 import openai
 from langchain.callbacks import get_openai_callback
 from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.llms import OpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import Chroma
-from langchain.chat_models import ChatOpenAI
-
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -84,8 +82,8 @@ class DocGPT:
         self.qa_chain = None
         self.llm = ChatOpenAI(
             temperature=0.2,
-            max_tokens=2000,
-            model_name='gpt-3.5-turbo'
+            max_tokens=6000,
+            model_name='gpt-3.5-turbo-16k'
         )
 
         self.prompt_template = """
