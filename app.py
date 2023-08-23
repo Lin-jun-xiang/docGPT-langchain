@@ -8,6 +8,7 @@ os.environ['SERPAPI_API_KEY'] = ''
 import langchain
 import streamlit as st
 from langchain.cache import InMemoryCache
+from streamlit import logger
 from streamlit_chat import message
 
 from agent import AgentHelper
@@ -22,11 +23,11 @@ agent_ = None
 
 st.session_state.openai_api_key = None
 st.session_state.serpapi_api_key = None
+app_logger = logger.get_logger(__name__)
 
 
 def theme():
     st.set_page_config(page_title="DocGPT")
-
     icon, title = st.columns([3, 20])
     with icon:
         st.image('./img/chatbot.png')
@@ -39,7 +40,6 @@ theme()
 
 def load_api_key() -> None:
     with st.sidebar:
-
         if st.session_state.openai_api_key:
             OPENAI_API_KEY = st.session_state.openai_api_key
             st.sidebar.success('API key loaded form previous input')
@@ -101,12 +101,12 @@ with st.container():
             llm_tool = agent_.create_llm_chain()
 
         except Exception as e:
-            print(e)
+            app_logger.info(e)
 
         try:
             search_tool = agent_.get_searp_chain
         except Exception as e:
-            print(e)
+            app_logger.info(e)
 
         try:
             tools = [
@@ -117,7 +117,7 @@ with st.container():
             ]
             agent_.initialize(tools)
         except Exception as e:
-            pass
+            app_logger.info(e)
 
 
 if not st.session_state['openai_api_key']:
@@ -142,7 +142,7 @@ def get_response(query: str):
             response = agent_.query(query)
             return response
     except Exception as e:
-        print(e)
+        app_logger.info(e)
 
 query = st.text_input(
     "#### Question:",

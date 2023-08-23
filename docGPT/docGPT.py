@@ -8,7 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import FAISS
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -116,7 +116,7 @@ class DocGPT:
     def _embeddings(self):
         embeddings = OpenAIEmbeddings()
 
-        db = Chroma.from_documents(
+        db = FAISS.from_documents(
             documents=self.docs,
             embedding= embeddings
         )
