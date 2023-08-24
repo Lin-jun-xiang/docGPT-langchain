@@ -1,5 +1,7 @@
 # docGPT
 
+
+
 [English](./README.md) | [中文版](./README.zh-TW.md)
 
 - Table of Contents
@@ -16,6 +18,9 @@
 
 * Using this tool requires at least the `openai_api_key`. You can visit the [link](https://platform.openai.com/) to learn how to obtain the key.
 
+<p align="center">
+<img src='img/2023-08-24-15-02-11.png' width='100%'>
+</p>
 
 ---
 
