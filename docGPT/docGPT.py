@@ -1,14 +1,19 @@
 import os
 from abc import ABC, abstractmethod
+from typing import List, Optional
 
+import g4f
 import openai
 from langchain.callbacks import get_openai_callback
+from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.chains import ConversationalRetrievalChain, RetrievalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.llms.base import LLM
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
+from tenacity import retry, stop_after_attempt
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -80,11 +85,7 @@ class DocGPT:
     def __init__(self, docs):
         self.docs = docs
         self.qa_chain = None
-        self.llm = ChatOpenAI(
-            temperature=0.2,
-            max_tokens=6000,
-            model_name='gpt-3.5-turbo-16k'
-        )
+        self._llm = None
 
         self.prompt_template = """
         Only answer what is asked. Answer step-by-step.
@@ -101,6 +102,14 @@ class DocGPT:
             template=self.prompt_template,
             input_variables=['context', 'question']
         )
+
+    @property
+    def llm(self):
+        return self._llm
+
+    @llm.setter
+    def llm(self, llm) -> None:
+        self._llm = llm
 
     def _helper_prompt(self, chain_type: str) -> None:
         # TODO: Bug helper
@@ -151,14 +160,14 @@ class DocGPT:
             self.qa_chain = RChain(
                 chain_type=chain_type,
                 retriever=retriever,
-                llm=self.llm,
+                llm=self._llm,
                 chain_type_kwargs=chain_type_kwargs
             ).create_qa_chain
         else:
             self.qa_chain = CRChain(
                 chain_type=chain_type,
                 retriever=retriever,
-                llm=self.llm
+                llm=self._llm
             ).create_qa_chain
 
     def run(self, query: str) -> str:
@@ -171,3 +180,53 @@ class DocGPT:
                 response = self.qa_chain({'question': query, 'chat_history': chat_history})
             print(callback)
         return response
+
+
+class GPT4Free(LLM):
+    PROVIDER_MAPPING = {
+        'g4f.Provider.ChatgptAi': g4f.Provider.ChatgptAi,
+        'g4f.Provider.AItianhu': g4f.Provider.AItianhu,
+        'g4f.Provider.Acytoo': g4f.Provider.Acytoo,
+        'g4f.Provider.AiService': g4f.Provider.AiService,
+        'g4f.Provider.Aichat': g4f.Provider.Aichat,
+        'g4f.Provider.Ails': g4f.Provider.Ails,
+        'g4f.Provider.Bard': g4f.Provider.Bard,
+        'g4f.Provider.Bing': g4f.Provider.Bing,
+        'g4f.Provider.ChatgptLogin': g4f.Provider.ChatgptLogin,
+        'g4f.Provider.DeepAi': g4f.Provider.DeepAi,
+        'g4f.Provider.DfeHub': g4f.Provider.DfeHub,
+        'g4f.Provider.EasyChat': g4f.Provider.EasyChat,
+        'g4f.Provider.Forefront': g4f.Provider.Forefront,
+        'g4f.Provider.GetGpt': g4f.Provider.GetGpt,
+        'g4f.Provider.H2o': g4f.Provider.H2o,
+        'g4f.Provider.Liaobots': g4f.Provider.Liaobots,
+        'g4f.Provider.Lockchat': g4f.Provider.Lockchat,
+        'g4f.Provider.Opchatgpts': g4f.Provider.Opchatgpts,
+        'g4f.Provider.Raycast': g4f.Provider.Raycast,
+        'g4f.Provider.Theb': g4f.Provider.Theb,
+        'g4f.Provider.Vercel': g4f.Provider.Vercel,
+        'g4f.Provider.Wewordle': g4f.Provider.Wewordle,
+        'g4f.Provider.You': g4f.Provider.You,
+        'g4f.Provider.Yqcloud': g4f.Provider.Yqcloud,
+    }
+    provider = PROVIDER_MAPPING['g4f.Provider.ChatgptAi']
+
+    @property
+    def _llm_type(self) -> str:
+        return 'gpt4free model'
+
+    # @retry(stop=stop_after_attempt(20))
+    def _call(
+        self,
+        prompt: str,
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[CallbackManagerForLLMRun] = None,
+    ) -> str:
+        try:
+            return g4f.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": prompt}],
+                provider=self.provider
+            )
+        except Exception as e:
+            print(self.provider)

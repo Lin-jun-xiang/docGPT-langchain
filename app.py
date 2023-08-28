@@ -8,12 +8,15 @@ os.environ['SERPAPI_API_KEY'] = ''
 import langchain
 import streamlit as st
 from langchain.cache import InMemoryCache
+from langchain.chat_models import ChatOpenAI
 from streamlit import logger
 from streamlit_chat import message
 
 from agent import AgentHelper
-from docGPT import DocGPT, OpenAiAPI, SerpAPI
+from docGPT import DocGPT, OpenAiAPI, SerpAPI, GPT4Free
 from model import PDFLoader
+import g4f
+from tenacity import retry, stop_after_attempt
 
 langchain.llm_cache = InMemoryCache()
 
@@ -23,6 +26,7 @@ agent_ = None
 
 st.session_state.openai_api_key = None
 st.session_state.serpapi_api_key = None
+st.session_state.g4f_provider = None
 app_logger = logger.get_logger(__name__)
 
 
@@ -66,6 +70,15 @@ def load_api_key() -> None:
 
         os.environ['SERPAPI_API_KEY'] = SERPAPI_API_KEY
 
+    with st.sidebar:
+        st.session_state.g4f_provider = st.selectbox(
+            (
+                "#### Select a provider if you want to use free model. "
+                "([details](https://github.com/xtekky/gpt4free#models))"
+            ),
+            (GPT4Free().PROVIDER_MAPPING.keys())
+        )
+
 
 def upload_and_process_pdf():
     upload_file = st.file_uploader('#### Upload a PDF file:', type='pdf')
@@ -103,12 +116,23 @@ doc_container = st.container()
 with doc_container:
     docs = upload_and_process_pdf()
 
-    agent_, docGPT_tool, calculate_tool, search_tool, llm_tool = [None]*5
-    if OpenAiAPI.is_valid():
+    if docs:
+        docGPT = DocGPT(docs=docs)
+        docGPT_tool, calculate_tool, search_tool, llm_tool = [None]*4
         agent_ = AgentHelper()
 
-        if docs:
-            docGPT = DocGPT(docs=docs)
+        if OpenAiAPI.is_valid():
+            # Use openai llm model
+            docGPT.llm = ChatOpenAI(
+                temperature=0.2,
+                max_tokens=6000,
+                model_name='gpt-3.5-turbo-16k'
+            )
+            agent_.llm = ChatOpenAI(
+                temperature=0.2,
+                max_tokens=6000,
+                model_name='gpt-3.5-turbo-16k'
+            )
             docGPT.create_qa_chain(
                 chain_type='refine',
             )
@@ -117,19 +141,35 @@ with doc_container:
             calculate_tool = agent_.get_calculate_chain
             llm_tool = agent_.create_llm_chain()
 
-    if SerpAPI.is_valid():
-        search_tool = agent_.get_searp_chain
+            if SerpAPI.is_valid():
+                search_tool = agent_.get_searp_chain
+        else:
+            # Use gpt4free llm model
+            docGPT.llm = GPT4Free(
+                provider=GPT4Free().PROVIDER_MAPPING[
+                    st.session_state.g4f_provider
+                ]
+            )
+            agent_.llm = GPT4Free(
+                provider=GPT4Free().PROVIDER_MAPPING[
+                    st.session_state.g4f_provider
+                ]
+            )
+            docGPT.create_qa_chain(
+                chain_type='refine',
+            )
+            docGPT_tool = agent_.create_doc_chat(docGPT)
+        try:
+            tools = [
+                docGPT_tool,
+                search_tool,
+                # llm_tool, # This will cause agent confuse
+                calculate_tool
+            ]
+            agent_.initialize(tools)
+        except Exception as e:
+            app_logger.info(e)
 
-    try:
-        tools = [
-            docGPT_tool,
-            search_tool,
-            # llm_tool, # This will cause agent confuse
-            calculate_tool
-        ]
-        agent_.initialize(tools)
-    except Exception as e:
-        app_logger.info(e)
 
     st.write('---')
 

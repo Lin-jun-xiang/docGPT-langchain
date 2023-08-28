@@ -20,7 +20,7 @@ class OpenAiAPI(ApiKey):
     @classmethod
     def is_valid(cls) -> str:
         if not st.session_state['openai_api_key']:
-            st.error('⚠️ :red[You have not pass OpenAI API key.] Necessary Pass')
+            st.error('⚠️ :red[You have not pass OpenAI API key.] Use default key')
             return
 
         openai.api_key = os.getenv('OPENAI_API_KEY')

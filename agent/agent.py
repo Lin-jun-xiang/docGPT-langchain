@@ -16,13 +16,17 @@ os.environ['SERPAPI_API_KEY'] = os.getenv('SERPAPI_API_KEY')
 class AgentHelper:
     """Add agent to help docGPT can be perfonm better."""
     def __init__(self) -> None:
-        self.llm = ChatOpenAI(
-            temperature=0.2,
-            max_tokens=6000,
-            model_name='gpt-3.5-turbo-16k'
-        )
+        self._llm = None
         self.agent_ = None
         self.tools = []
+
+    @property
+    def llm(self):
+        return self._llm
+
+    @llm.setter
+    def llm(self, llm) -> None:
+        self._llm = llm
 
     @property
     def get_calculate_chain(self) -> Tool:
