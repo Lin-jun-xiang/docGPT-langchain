@@ -10,11 +10,33 @@
     - [Advanced - How to build a better model in langchain](#advanced---how-to-build-a-better-model-in-langchain)
 
 * 主要開發軟體與套件:
-    * `Python 3.8.6`
+    * `Python 3.10.11`
     * `Langchain 0.0.218`
     * `Streamlit 1.22.0`
+    * [more](./requirements.txt)
 
-* 使用該工具至少須具備 `openai_api_key`，有關如何取得 key 可以前往[連結](https://platform.openai.com/)
+### docGPT-V2 vs docGPT-V3
+
+我們在 docGPT-V3 引入 `gpt4free` 的調用，讓使用者可以在不輸入任何 api key、付費的情況下，**免費使用**該應用程序
+(更多 [`gpt4free`](https://github.com/xtekky/gpt4free) 的資訊請參考源專案)
+
+* Version2
+  * 使用 **`openai` 模型**
+  * 使用該工具至少**須具備** `openai_api_key`，有關如何取得 key 可以前往[連結](https://platform.openai.com/)
+  * 若具備 `serpapi_key`，可以讓 AI 模型回答實現 google 搜尋功能
+
+* Version3
+  * 保留 Version2 的所有功能
+  * 新增 **`gpt4free` 模型**，讓使用者能在**完全免費**的狀態下使用
+  * 使用者可以選擇 `gpt4free` 或者 `openai` 作為模型，差別如下:
+    * `gpt4free`: 透過逆向工程實現免費調用 openai，缺點是不穩定
+    * `openai`: 帶入 api key，穩定調用 `openai` 模型
+
+<p align="center">
+<img src="img/2023-08-29-11-51-13.png" width="70%">
+</p>
+
+如果您喜歡這個專案，請給予⭐`Star`以支持開發者~
 
 ---
 
@@ -33,6 +55,8 @@
         * `llm_math_chain`: 當使用者問題屬於 "**數學計算**"，使用該工具可以進行 數學計算
         * `docGPT`: 當使用者詢問有關 PDF 文檔內容，使用該工具可以進行解答 (該工具也是我們透過 retrievalQA 建立的)
 * `docGPT` 是基於 **langchain** 與 **streamlit** 開發的
+
+### 
 
 ---
 

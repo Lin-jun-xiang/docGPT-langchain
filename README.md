@@ -12,18 +12,33 @@
     - [Advanced - How to build a better model in langchain](#advanced---how-to-build-a-better-model-in-langchain)
 
 * Main Development Software and Packages:
-    * `Python 3.8.6`
+    * `Python 3.10.11`
     * `Langchain 0.0.218`
     * `Streamlit 1.22.0`
 
-* Using this tool requires at least the `openai_api_key`. You can visit the [link](https://platform.openai.com/) to learn how to obtain the key.
+### docGPT-V2 vs docGPT-V3
+
+In docGPT-V3, we introduced the usage of `gpt4free`, allowing users to use the application **for free without entering any API key or making payments** (For more information about [`gpt4free`](https://github.com/xtekky/gpt4free), please refer to the source project).
+
+* Version2
+  * Utilizes the **`openai` model**
+  * To use this tool, you need to have at least the `openai_api_key`. You can obtain the key by visiting the [link](https://platform.openai.com/)
+  * If you have a `serpapi_key`, the AI model can answer questions and implement Google search functionality
+
+* Version3
+  * Retains all the features of Version2
+  * Adds the **`gpt4free` model**, enabling users to use it **completely for free**
+  * Users can choose between `gpt4free` or `openai` as the model, with differences as follows:
+    * `gpt4free`: Achieves free access to openai through reverse engineering, although it's less stable
+    * `openai`: Stable access to the `openai` model by providing an API key
 
 <p align="center">
-<img src='img/2023-08-24-15-02-11.png' width='100%'>
+<img src="img/2023-08-29-11-51-13.png" width="70%">
 </p>
 
----
+If you like this project, please give it a ⭐`Star` to support the developers~
 
+---
 
 ### Introduction
 
