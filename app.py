@@ -8,21 +8,17 @@ os.environ['SERPAPI_API_KEY'] = ''
 import langchain
 import streamlit as st
 from langchain.cache import InMemoryCache
-from langchain.chat_models import ChatOpenAI
 from streamlit import logger
 from streamlit_chat import message
 
-from agent import AgentHelper
-from docGPT import DocGPT, OpenAiAPI, SerpAPI, GPT4Free
+from docGPT import GPT4Free, create_doc_gpt
 from model import PDFLoader
-import g4f
-from tenacity import retry, stop_after_attempt
 
 langchain.llm_cache = InMemoryCache()
 
 OPENAI_API_KEY = ''
 SERPAPI_API_KEY = ''
-agent_ = None
+model = None
 
 st.session_state.openai_api_key = None
 st.session_state.serpapi_api_key = None
@@ -30,13 +26,28 @@ st.session_state.g4f_provider = None
 app_logger = logger.get_logger(__name__)
 
 
-def theme():
+def theme() -> None:
     st.set_page_config(page_title="DocGPT")
     icon, title = st.columns([3, 20])
     with icon:
         st.image('./img/chatbot.png')
     with title:
         st.title('PDF Chatbot')
+    
+    with st.sidebar:
+
+        with st.expander(':orange[How to use?]'):
+            st.markdown(
+                """
+                1. Enter your API keys: (You can choose to skip it and use the `gpt4free` free model)
+                    * `OpenAI API Key`: Make sure you still have usage left
+                    * `SERPAPI API Key`: Optional. If you want to ask questions about content not appearing in the PDF document, you need this key.
+                2. Upload a PDF file from your local machine.
+                3. Start asking questions!
+                4. More details.(https://github.com/Lin-jun-xiang/docGPT-streamlit)
+                5. If you have any questions, feel free to leave comments and engage in discussions.(https://github.com/Lin-jun-xiang/docGPT-streamlit/issues)
+                """
+            )
 
 
 def load_api_key() -> None:
@@ -80,7 +91,7 @@ def load_api_key() -> None:
         )
 
 
-def upload_and_process_pdf():
+def upload_and_process_pdf() -> list:
     upload_file = st.file_uploader('#### Upload a PDF file:', type='pdf')
     if upload_file:
         temp_file = tempfile.NamedTemporaryFile(delete=False)
@@ -98,13 +109,20 @@ def upload_and_process_pdf():
 
 
 @lru_cache(maxsize=20)
-def get_response(query: str):
+def get_response(query: str) -> str:
     try:
-        if agent_.agent_ is not None:
-            response = agent_.query(query)
+        if model is not None:
+            response = model.run(query)
             return response
     except Exception as e:
-        app_logger.info(e)
+        app_logger.info(f'{__file__}: {e}')
+        return (
+            'Something wrong in docGPT...\n'
+            '1. If you are using gpt4free model, '
+            'try to select the different provider.\n'
+            '2. If you are using openai model, '
+            'check your usage for openai api key.'
+        )
 
 
 theme()
@@ -112,65 +130,9 @@ load_api_key()
 
 doc_container = st.container()
 
-
 with doc_container:
     docs = upload_and_process_pdf()
-
-    if docs:
-        docGPT = DocGPT(docs=docs)
-        docGPT_tool, calculate_tool, search_tool, llm_tool = [None]*4
-        agent_ = AgentHelper()
-
-        if OpenAiAPI.is_valid():
-            # Use openai llm model
-            docGPT.llm = ChatOpenAI(
-                temperature=0.2,
-                max_tokens=6000,
-                model_name='gpt-3.5-turbo-16k'
-            )
-            agent_.llm = ChatOpenAI(
-                temperature=0.2,
-                max_tokens=6000,
-                model_name='gpt-3.5-turbo-16k'
-            )
-            docGPT.create_qa_chain(
-                chain_type='refine',
-            )
-
-            docGPT_tool = agent_.create_doc_chat(docGPT)
-            calculate_tool = agent_.get_calculate_chain
-            llm_tool = agent_.create_llm_chain()
-
-            if SerpAPI.is_valid():
-                search_tool = agent_.get_searp_chain
-        else:
-            # Use gpt4free llm model
-            docGPT.llm = GPT4Free(
-                provider=GPT4Free().PROVIDER_MAPPING[
-                    st.session_state.g4f_provider
-                ]
-            )
-            agent_.llm = GPT4Free(
-                provider=GPT4Free().PROVIDER_MAPPING[
-                    st.session_state.g4f_provider
-                ]
-            )
-            docGPT.create_qa_chain(
-                chain_type='refine',
-            )
-            docGPT_tool = agent_.create_doc_chat(docGPT)
-        try:
-            tools = [
-                docGPT_tool,
-                search_tool,
-                # llm_tool, # This will cause agent confuse
-                calculate_tool
-            ]
-            agent_.initialize(tools)
-        except Exception as e:
-            app_logger.info(e)
-
-
+    model = create_doc_gpt(docs)
     st.write('---')
 
 if 'response' not in st.session_state:

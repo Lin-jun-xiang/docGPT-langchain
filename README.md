@@ -18,7 +18,11 @@
 
 ### docGPT-V2 vs docGPT-V3
 
-In docGPT-V3, we introduced the usage of `gpt4free`, allowing users to use the application **for free without entering any API key or making payments** (For more information about [`gpt4free`](https://github.com/xtekky/gpt4free), please refer to the source project).
+In docGPT-V3, we introduced the usage of `gpt4free`, allowing users to use the application **for free without entering any API key or making payments**.
+
+If you want to use the `gpt4free` free model, you need to select a `Provider` (default is `g4f.provider.ChatgptAi`).
+
+(For more information about [`gpt4free`](https://github.com/xtekky/gpt4free), please refer to the source project).
 
 * Version2
   * Utilizes the **`openai` model**
@@ -33,7 +37,7 @@ In docGPT-V3, we introduced the usage of `gpt4free`, allowing users to use the a
     * `openai`: Stable access to the `openai` model by providing an API key
 
 <p align="center">
-<img src="img/2023-08-29-11-51-13.png" width="70%">
+<img src="img/2023-08-29-13-39-00.png" width="70%">
 </p>
 
 If you like this project, please give it a ⭐`Star` to support the developers~
@@ -97,8 +101,8 @@ With Langchain, we can create our own ChatGPT model that can be general-purpose 
 
 * Visit the [application](https://docgpt-app.streamlit.app/).
 
-* Enter your API keys:
-    * `OpenAI API Key`: Required.
+* Enter your API keys: (This step is optional in version V3, you can choose to skip it and use the `gpt4free` free model)
+    * `OpenAI API Key`: Make sure you still have usage left
     * `SERPAPI API Key`: Optional. If you want to ask questions about content not appearing in the PDF document, you need this key.
 
 * Upload a PDF file from your local machine.

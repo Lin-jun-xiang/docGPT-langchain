@@ -17,7 +17,10 @@
 
 ### docGPT-V2 vs docGPT-V3
 
-我們在 docGPT-V3 引入 `gpt4free` 的調用，讓使用者可以在不輸入任何 api key、付費的情況下，**免費使用**該應用程序
+我們在 docGPT-V3 引入 `gpt4free` 的調用，讓使用者可以在不輸入任何 api key、付費的情況下，**免費使用**該應用程序。
+
+如果您要使用 `gpt4free` 免費模型，您需要選擇 `Provider` (預設是 `g4f.provider.ChatgptAi`)。
+
 (更多 [`gpt4free`](https://github.com/xtekky/gpt4free) 的資訊請參考源專案)
 
 * Version2
@@ -33,7 +36,7 @@
     * `openai`: 帶入 api key，穩定調用 `openai` 模型
 
 <p align="center">
-<img src="img/2023-08-29-11-51-13.png" width="70%">
+<img src="img/2023-08-29-13-39-00.png" width="70%">
 </p>
 
 如果您喜歡這個專案，請給予⭐`Star`以支持開發者~
@@ -100,8 +103,8 @@
 
 * 前往[應用程序](https://docgpt-app.streamlit.app/)
 
-* 輸入您的 `API_KEY`:
-    * `OpenAI API KEY`: 必須設定
+* 輸入您的 `API_KEY` (此步驟在V3版本，可以選擇忽略，使用 `gpt4free` 免費模型):
+    * `OpenAI API KEY`: 務必確認是否還有使用量
     * `SERPAPI API KEY`: 根據您需求，如果您要問**PDF文檔沒有出現**的內容，您就需要用此 KEY
 
 * 上傳來自本地的 PDF 檔案

@@ -7,7 +7,7 @@ import openai
 from langchain.callbacks import get_openai_callback
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.chains import ConversationalRetrievalChain, RetrievalQA
-from langchain.chat_models import ChatOpenAI
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.llms.base import LLM
 from langchain.memory import ConversationBufferMemory
@@ -123,61 +123,44 @@ class DocGPT:
                     self.prompt.input_variables[i] = 'context_str'
 
     def _embeddings(self):
-        embeddings = OpenAIEmbeddings()
+        try:
+            # If have openai api
+            embeddings = OpenAIEmbeddings()
+        except:
+            embeddings = HuggingFaceEmbeddings()
 
         db = FAISS.from_documents(
             documents=self.docs,
-            embedding= embeddings
+            embedding=embeddings
         )
-
         return db
 
     def create_qa_chain(
         self,
         chain_type: str='stuff',
-        chain_model: str='retrieval',
     ) -> BaseQaChain:
-        db = self._embeddings()
-
         # TODO: Bug helper
         self._helper_prompt(chain_type)
+        chain_type_kwargs = {
+            'question_prompt': self.prompt,
+            'verbose': True
+        }
 
-        # TODO: Bug helper
-        if chain_type in ('stuff', 'map_rerank'):
-            chain_type_kwargs = {
-                'prompt': self.prompt,
-                'verbose': True
-            }
-        else:
-            chain_type_kwargs = {
-                'question_prompt': self.prompt,
-                'verbose': True
-            }
-
+        db = self._embeddings()
         retriever = db.as_retriever()
 
-        if chain_model == 'retrieval':
-            self.qa_chain = RChain(
-                chain_type=chain_type,
-                retriever=retriever,
-                llm=self._llm,
-                chain_type_kwargs=chain_type_kwargs
-            ).create_qa_chain
-        else:
-            self.qa_chain = CRChain(
-                chain_type=chain_type,
-                retriever=retriever,
-                llm=self._llm
-            ).create_qa_chain
+        self.qa_chain = RChain(
+            chain_type=chain_type,
+            retriever=retriever,
+            llm=self._llm,
+            chain_type_kwargs=chain_type_kwargs
+        ).create_qa_chain
 
     def run(self, query: str) -> str:
         response = 'Nothing...'
         with get_openai_callback() as callback:
             if isinstance(self.qa_chain, RetrievalQA):
                 response = self.qa_chain.run(query)
-            elif isinstance(self.qa_chain, ConversationalRetrievalChain):
-                chat_history = []
-                response = self.qa_chain({'question': query, 'chat_history': chat_history})
             print(callback)
         return response
 
@@ -215,7 +198,6 @@ class GPT4Free(LLM):
     def _llm_type(self) -> str:
         return 'gpt4free model'
 
-    # @retry(stop=stop_after_attempt(20))
     def _call(
         self,
         prompt: str,
@@ -223,10 +205,11 @@ class GPT4Free(LLM):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
     ) -> str:
         try:
+            print('promopt: ', prompt)
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
                 provider=self.provider
             )
         except Exception as e:
-            print(self.provider)
+            print(f'{__file__}: {e}')

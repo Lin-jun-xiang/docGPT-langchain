@@ -6,7 +6,6 @@ from langchain import LLMMathChain, SerpAPIWrapper
 from langchain.agents import AgentType, Tool, initialize_agent
 from langchain.callbacks import get_openai_callback
 from langchain.chains import LLMChain
-from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -86,12 +85,15 @@ class AgentHelper:
             verbose=True
         )
 
-    def query(self, query: str) -> Optional[str]:
+    def run(self, query: str) -> Optional[str]:
         response = None
         with get_openai_callback() as callback:
-            # TODO: The true result will hide in 'Observation'
-            # https://github.com/hwchase17/langchain/issues/4916
-            # https://python.langchain.com/docs/modules/agents/how_to/intermediate_steps
-            response = self.agent_.run(query)
+            try:
+                response = self.agent_.run(query)
+            except ValueError as e:
+                response = 'Something wrong in agent: ' + str(e)
+                if not response.startswith("Could not parse LLM output: `"):
+                    raise e
+
             print(callback)
         return response

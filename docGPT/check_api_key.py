@@ -20,7 +20,7 @@ class OpenAiAPI(ApiKey):
     @classmethod
     def is_valid(cls) -> str:
         if not st.session_state['openai_api_key']:
-            st.error('⚠️ :red[You have not pass OpenAI API key.] Use default key')
+            st.error('⚠️ :red[You have not pass OpenAI API key.] Use default model')
             return
 
         openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -57,4 +57,3 @@ class SerpAPI(ApiKey):
                 '[Check your usage](https://serpapi.com/dashboard)'
             )
             print(f'Test error\n{e}')
-
