@@ -44,14 +44,16 @@ def create_doc_gpt(docs):
             if SerpAPI.is_valid():
                 search_tool = agent_.get_searp_chain
 
-            tools = [
-                docGPT_tool,
-                search_tool,
-                # llm_tool, # This will cause agent confuse
-                calculate_tool
-            ]
-            agent_.initialize(tools)
-            return agent_ if agent_ is not None else None
+                tools = [
+                    docGPT_tool,
+                    search_tool,
+                    # llm_tool, # This will cause agent confuse
+                    calculate_tool
+                ]
+                agent_.initialize(tools)
+                return agent_ if agent_ is not None else None
+            else:
+                return docGPT
         else:
             # Use gpt4free llm model without agent
             llm_model = GPT4Free(
