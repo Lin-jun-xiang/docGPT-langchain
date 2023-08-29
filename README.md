@@ -1,10 +1,9 @@
 # docGPT
 
-
-
 [English](./README.md) | [中文版](./README.zh-TW.md)
 
 - Table of Contents
+    - [What's new in version3?](#whats-new-in-version3)
     - [Introduction](#introduction)
     - [What's LangChain?](#whats-langchain)
     - [How to Use docGPT?](#how-to-use-docgpt)
@@ -15,14 +14,15 @@
     * `Python 3.10.11`
     * `Langchain 0.0.218`
     * `Streamlit 1.22.0`
+    * [more](./requirements.txt)
 
-### docGPT-V2 vs docGPT-V3
+If you like this project, please give it a ⭐`Star` to support the developers~
 
-In docGPT-V3, we introduced the usage of `gpt4free`, allowing users to use the application **for free without entering any API key or making payments**.
+### What's new in version3?
 
-If you want to use the `gpt4free` free model, you need to select a `Provider` (default is `g4f.provider.ChatgptAi`).
+* We introduced the usage of `gpt4free`, **allowing users to use the application for free without entering any API key or making payments.**
 
-(For more information about [`gpt4free`](https://github.com/xtekky/gpt4free), please refer to the source project).
+* If you want to use the `gpt4free` free model, you need to select a `Provider` (default is `g4f.provider.ChatgptAi`). For more information about [`gpt4free`](https://github.com/xtekky/gpt4free), please refer to the source project.
 
 * Version2
   * Utilizes the **`openai` model**
@@ -40,7 +40,6 @@ If you want to use the `gpt4free` free model, you need to select a `Provider` (d
 <img src="img/2023-08-29-13-39-00.png" width="70%">
 </p>
 
-If you like this project, please give it a ⭐`Star` to support the developers~
 
 ---
 

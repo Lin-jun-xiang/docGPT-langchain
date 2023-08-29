@@ -3,6 +3,7 @@
 [English](./README.md) | [中文版](./README.zh-TW.md)
 
 - 目錄
+    - [What's new in version3?](#whats-new-in-version3)
     - [Introduction](#introduction)
     - [What's LangChain?](#whats-langchain)
     - [How to Use docGPT?](#how-to-use-docgpt)
@@ -15,13 +16,14 @@
     * `Streamlit 1.22.0`
     * [more](./requirements.txt)
 
-### docGPT-V2 vs docGPT-V3
+如果您喜歡這個專案，請給予⭐`Star`以支持開發者~
 
-我們在 docGPT-V3 引入 `gpt4free` 的調用，讓使用者可以在不輸入任何 api key、付費的情況下，**免費使用**該應用程序。
 
-如果您要使用 `gpt4free` 免費模型，您需要選擇 `Provider` (預設是 `g4f.provider.ChatgptAi`)。
+### What's new in version3?
 
-(更多 [`gpt4free`](https://github.com/xtekky/gpt4free) 的資訊請參考源專案)
+* 引入 `gpt4free` 的調用，**"讓使用者可以在不輸入任何 api key、付費的情況下，免費使用該應用程序"**。
+
+* 如果您要使用 `gpt4free` 免費模型，您需要選擇 `Provider` (預設是 `g4f.provider.ChatgptAi`)，更多 [`gpt4free`](https://github.com/xtekky/gpt4free) 的資訊請參考源專案。
 
 * Version2
   * 使用 **`openai` 模型**
@@ -38,8 +40,6 @@
 <p align="center">
 <img src="img/2023-08-29-13-39-00.png" width="70%">
 </p>
-
-如果您喜歡這個專案，請給予⭐`Star`以支持開發者~
 
 ---
 
