@@ -1,4 +1,7 @@
-# docGPT
+<p align="center">
+    <img style="width: 50%; height: auto;" src="./img/repos_logo.png" alt="Chatbot Image">
+</p>
+
 
 [English](./README.md) | [中文版](./README.zh-TW.md)
 

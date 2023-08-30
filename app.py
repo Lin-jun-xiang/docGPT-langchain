@@ -27,13 +27,9 @@ app_logger = logger.get_logger(__name__)
 
 
 def theme() -> None:
-    st.set_page_config(page_title="DocGPT")
-    icon, title = st.columns([3, 20])
-    with icon:
-        st.image('./img/chatbot.png')
-    with title:
-        st.title('PDF Chatbot')
-    
+    st.set_page_config(page_title="Document GPT")
+    st.image('./img/repos_logo.png', width=250)
+
     with st.sidebar:
 
         with st.expander(':orange[How to use?]'):

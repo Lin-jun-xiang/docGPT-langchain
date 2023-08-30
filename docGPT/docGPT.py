@@ -13,7 +13,6 @@ from langchain.llms.base import LLM
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
-from tenacity import retry, stop_after_attempt
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -87,20 +86,42 @@ class DocGPT:
         self.qa_chain = None
         self._llm = None
 
-        self.prompt_template = """
-        Only answer what is asked. Answer step-by-step.
-        If the content has sections, please summarize them in order and present them in a bulleted format.
-        Utilize line breaks for better readability.
-        For example, sequentially summarize the introduction, methods, results, and so on.
-
-        {context}
-
-        Question: {question}
-        """
-
+        self.prompt_template = (
+            "Only answer what is asked. Answer step-by-step.\n"
+            "If the content has sections, please summarize them "
+            "in order and present them in a bulleted format.\n"
+            "Utilize line breaks for better readability.\n"
+            "For example, sequentially summarize the "
+            "introduction, methods, results, and so on.\n"
+            "Please use Python's newline symbols appropriately to "
+            "enhance the readability of the response, "
+            "but don't use two newline symbols consecutive.\n\n"
+            "{context}\n\n"
+            "Question: {question}\n"
+        )
         self.prompt = PromptTemplate(
             template=self.prompt_template,
             input_variables=['context', 'question']
+        )
+
+        self.refine_prompt_template = (
+            "The original question is as follows: {question}\n"
+            "We have provided an existing answer: {existing_answer}\n"
+            "We have the opportunity to refine the existing answer"
+            "(only if needed) with some more context below.\n"
+            "------------\n"
+            "{context_str}\n"
+            "------------\n"
+            "Given the new context, refine the original answer to better "
+            "answer the question. "
+            "If the context isn't useful, return the original answer.\n"
+            "Please use Python's newline symbols "
+            "appropriately to enhance the readability of the response, "
+            "but don't use two newline symbols consecutive.\n"
+        )
+        self.refine_prompt = PromptTemplate(
+            template=self.refine_prompt_template,
+            input_variables=['question', 'existing_answer', 'context_str']
         )
 
     @property
@@ -143,7 +164,8 @@ class DocGPT:
         self._helper_prompt(chain_type)
         chain_type_kwargs = {
             'question_prompt': self.prompt,
-            'verbose': True
+            'verbose': True,
+            'refine_prompt': self.refine_prompt
         }
 
         db = self._embeddings()
