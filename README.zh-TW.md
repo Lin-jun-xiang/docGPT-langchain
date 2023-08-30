@@ -65,6 +65,15 @@
 
 ---
 
+### 🧨Features
+
+- **`gpt4free` 整合**：任何人都可以免費使用 GPT4，無需輸入 OpenAI API 金鑰。
+- **直接輸入 PDF 網址**：使用者可以直接輸入 PDF 網址進行解析，無需上傳 .pdf 檔案。
+- **Langchain Agent**：AI 能夠回答當前問題，實現類似 Google 搜尋功能。
+- **簡易操作環境**：友善的界面，操作簡便
+
+---
+
 ### 🦜️What's LangChain?
 
 * LangChain 是一個用於**開發由語言模型支持的應用程序的框架**。它支持以下應用程序
@@ -105,7 +114,10 @@ LangChain 填補了 ChatGPT 的不足之處。通過以下示例，您可以理�
     * `OpenAI API KEY`: 確保還有可用的使用次數。
     * `SERPAPI API KEY`: 如果您要查詢 PDF 中不存在的內容，則需要使用此金鑰。
 
-3. 📁上傳來自本地的 PDF 檔案
+3. 📁上傳來自本地的 PDF 檔案 (選擇一個方法)
+    * 方法一: 從本地機瀏覽並上傳自己的 `.pdf` 檔
+    * 方法二: 輸入 PDF URL 連結
+
 4. 🚀開始提問 ! 
 
 ![RGB_cleanup](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/img/docGPT.gif?raw=true)

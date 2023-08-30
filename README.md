@@ -62,6 +62,15 @@ If you like this project, please give it a ⭐`Star` to support the developers~
 
 ---
 
+### 🧨Features
+
+- **`gpt4free` Integration**: Everyone can use `docGPT` for **free** without needing an OpenAI API key.
+- **Direct PDF URL Input**: Users can input PDF `URL` links for parsing without uploading `.pdf` files.
+- **Langchain Agent**: Enables AI to answer current questions and achieve Google search-like functionality.
+- **User-Friendly Environment**: Easy-to-use interface for simple operations.
+
+---
+
 ### 🦜️What's LangChain?
 
 * LangChain is a framework for developing applications powered by language models. It supports the following applications:
@@ -101,7 +110,9 @@ Through LangChain, you can create a universal AI model or tailor it for business
    - `OpenAI API KEY`: Ensure you have available usage.
    - `SERPAPI API KEY`: Required if you want to query content not present in the PDF.
 
-3. 📁Upload a PDF file from local storage.
+3. 📁Upload a PDF file (choose one method)
+    * Method 1: Browse and upload your own `.pdf` file from your local machine.
+    * Method 2: Enter the PDF `URL` link directly.
 
 4. 🚀Start asking questions!
 

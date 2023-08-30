@@ -1,9 +1,10 @@
-import json
 import os
 from typing import Iterator
 
+import requests
 from langchain.document_loaders import PyMuPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+import streamlit as st
 
 
 class PDFLoader:
@@ -35,3 +36,15 @@ class PDFLoader:
         )
 
         return splitter.split_documents(document)
+
+    @staticmethod
+    def crawl_pdf_file(url: str) -> str:
+        try:
+            response = requests.get(url)
+            content_type = response.headers.get('content-type')
+            if response.status_code == 200 and 'pdf' in content_type:
+                return response.content
+            else:
+                st.warning('Url cannot parse to PDF')
+        except:
+            st.warning('Url cannot parse to PDF')

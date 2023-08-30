@@ -42,7 +42,9 @@ def theme() -> None:
                 1. Enter your API keys: (You can choose to skip it and use the `gpt4free` free model)
                     * `OpenAI API Key`: Make sure you still have usage left
                     * `SERPAPI API Key`: Optional. If you want to ask questions about content not appearing in the PDF document, you need this key.
-                2. Upload a PDF file from your local machine.
+                2. Upload a PDF file (choose one method):
+                    * method1: Browse and upload your own `.pdf` file from your local machine.
+                    * method2: Enter the PDF `URL` link directly.
                 3. Start asking questions!
                 4. More details.(https://github.com/Lin-jun-xiang/docGPT-streamlit)
                 5. If you have any questions, feel free to leave comments and engage in discussions.(https://github.com/Lin-jun-xiang/docGPT-streamlit/issues)
@@ -92,10 +94,30 @@ def load_api_key() -> None:
 
 
 def upload_and_process_pdf() -> list:
-    upload_file = st.file_uploader('#### Upload a PDF file:', type='pdf')
+    st.write('#### Upload a PDF file:')
+    browse, url_link = st.tabs(
+        ['Drag and drop file (Browse files)', 'Enter PDF URL link']
+    )
+    with browse:
+        upload_file = st.file_uploader(
+            'Browse file',
+            type='pdf',
+            label_visibility='hidden'
+        )
+        upload_file = upload_file.read() if upload_file else None
+
+    with url_link:
+        pdf_url = st.text_input(
+            "Enter PDF URL Link",
+            placeholder='https://www.xxx/uploads/file.pdf',
+            label_visibility='hidden'
+        )
+        if pdf_url:
+            upload_file = PDFLoader.crawl_pdf_file(pdf_url)
+
     if upload_file:
         temp_file = tempfile.NamedTemporaryFile(delete=False)
-        temp_file.write(upload_file.read())
+        temp_file.write(upload_file)
         temp_file_path = temp_file.name
 
         docs = PDFLoader.load_documents(temp_file_path)
