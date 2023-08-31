@@ -137,7 +137,8 @@ def get_response(query: str) -> str:
         return (
             'Something wrong in docGPT...\n'
             '1. If you are using gpt4free model, '
-            'try to select the different provider.\n'
+            'try to select the different provider. '
+            '(Or wait a moment, maybe there have something wrong in gpt4free)\n'
             '2. If you are using openai model, '
             'check your usage for openai api key.'
         )
@@ -151,6 +152,7 @@ doc_container = st.container()
 with doc_container:
     docs = upload_and_process_pdf()
     model = create_doc_gpt(docs)
+    del docs
     st.write('---')
 
 if 'response' not in st.session_state:

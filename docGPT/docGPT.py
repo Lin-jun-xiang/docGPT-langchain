@@ -148,7 +148,12 @@ class DocGPT:
             # If have openai api
             embeddings = OpenAIEmbeddings()
         except:
-            embeddings = HuggingFaceEmbeddings()
+            embeddings = HuggingFaceEmbeddings(
+                model_name=(
+                    'sentence-transformers/'
+                    'multi-qa-MiniLM-L6-cos-v1'
+                )
+            )
 
         db = FAISS.from_documents(
             documents=self.docs,
