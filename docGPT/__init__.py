@@ -14,11 +14,13 @@ os.environ['SERPAPI_API_KEY'] = os.getenv('SERPAPI_API_KEY')
 module_logger = logger.get_logger(__name__)
 
 
-def create_doc_gpt(docs):
-    if not docs:
-        return
-
-    docGPT = DocGPT(docs=docs)
+@st.cache_resource(ttl=1800, max_entries=10)
+def create_doc_gpt(
+    _docs: list,
+    doc_metadata: str,
+    g4f_provider: str
+) -> DocGPT:
+    docGPT = DocGPT(docs=_docs)
 
     try:
         if OpenAiAPI.is_valid():
@@ -33,10 +35,8 @@ def create_doc_gpt(docs):
             )
             docGPT.llm = llm_model
             agent_.llm = llm_model
-            with st.spinner('Running...'):
-                docGPT.create_qa_chain(
-                    chain_type='refine',
-                )
+
+            docGPT.create_qa_chain(chain_type='refine')
             docGPT_tool = agent_.create_doc_chat(docGPT)
             calculate_tool = agent_.get_calculate_chain
             llm_tool = agent_.create_llm_chain()
@@ -58,14 +58,12 @@ def create_doc_gpt(docs):
             # Use gpt4free llm model without agent
             llm_model = GPT4Free(
                 provider=GPT4Free().PROVIDER_MAPPING[
-                    st.session_state.g4f_provider
+                    g4f_provider
                 ]
             )
+            print(GPT4Free().PROVIDER_MAPPING[g4f_provider])
             docGPT.llm = llm_model
-            with st.spinner('Running...(free model will take more time)'):
-                docGPT.create_qa_chain(
-                    chain_type='refine',
-                )
+            docGPT.create_qa_chain(chain_type='refine')
             return docGPT
     except Exception as e:
         module_logger.info(f'{__file__}: {e}')

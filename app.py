@@ -151,8 +151,14 @@ doc_container = st.container()
 
 with doc_container:
     docs = upload_and_process_pdf()
-    model = create_doc_gpt(docs)
-    del docs
+
+    if docs:
+        model = create_doc_gpt(
+            docs,
+            {k: v for k, v in docs[0].metadata.items() if k not in ['source', 'file_path']},
+            st.session_state.g4f_provider
+        )
+        del docs
     st.write('---')
 
 if 'response' not in st.session_state:

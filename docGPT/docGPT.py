@@ -159,6 +159,7 @@ class DocGPT:
             documents=self.docs,
             embedding=embeddings
         )
+        print('embedded...')
         return db
 
     def create_qa_chain(
