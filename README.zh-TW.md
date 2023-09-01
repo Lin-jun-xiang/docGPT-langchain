@@ -1,5 +1,5 @@
 <p align="center">
-    <img style="width: 50%; height: auto;" src="./img/repos_logo.png" alt="Chatbot Image">
+    <img style="width: 50%; height: auto;" src="./static/img/repos_logo.png" alt="Chatbot Image">
 </p>
 
 [English](./README.md) | [中文版](./README.zh-TW.md)
@@ -42,7 +42,7 @@
     * `openai`: 通過 API 金鑰穩定調用 `openai` 模型
 
 <p align="center">
-<img src="img/2023-08-29-13-39-00.png" width="70%">
+<img src="static/img/2023-08-29-13-39-00.png" width="70%">
 </p>
 
 ---
@@ -122,7 +122,7 @@ LangChain 填補了 ChatGPT 的不足之處。通過以下示例，您可以理�
 
 4. 🚀開始提問 ! 
 
-![RGB_cleanup](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/img/docGPT.gif?raw=true)
+![RGB_cleanup](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/static/img/docGPT.gif?raw=true)
 
 ---
 

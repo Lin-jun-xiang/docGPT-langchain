@@ -28,7 +28,7 @@ app_logger = logger.get_logger(__name__)
 
 def theme() -> None:
     st.set_page_config(page_title="Document GPT")
-    st.image('./img/repos_logo.png', width=250)
+    st.image('./static/img/repos_logo.png', width=250)
 
     with st.sidebar:
 
@@ -181,9 +181,9 @@ with response_container:
             message(
                 st.session_state["response"][i], key=str(i),
                 logo=(
-                    'https://api.dicebear.com/6.x/bottts/svg?'
-                    'baseColor=fb8c00&eyes=bulging'
-                )    
+                    'https://github.com/Lin-jun-xiang/docGPT-streamlit/'
+                    'blob/main/static/img/chatbot_v2.png?raw=true'
+                )
             )
             message(
                 st.session_state['query'][i], is_user=True, key=str(i) + '_user',

@@ -1,5 +1,5 @@
 <p align="center">
-    <img style="width: 50%; height: auto;" src="./img/repos_logo.png" alt="Chatbot Image">
+    <img style="width: 50%; height: auto;" src="./static/img/repos_logo.png" alt="Chatbot Image">
 </p>
 
 
@@ -40,7 +40,7 @@ If you like this project, please give it a ⭐`Star` to support the developers~
     - `openai`: Offers stable access by using an API key.
 
 <p align="center">
-<img src="img/2023-08-29-13-39-00.png" width="70%">
+<img src="static/img/2023-08-29-13-39-00.png" width="70%">
 </p>
 
 ---
@@ -119,7 +119,7 @@ Through LangChain, you can create a universal AI model or tailor it for business
 
 4. 🚀Start asking questions!
 
-![docGPT](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/img/docGPT.gif?raw=true)
+![docGPT](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/static/img/docGPT.gif?raw=true)
 
 ---
 
