@@ -131,6 +131,7 @@ def get_response(query: str) -> str:
     try:
         if model is not None:
             response = model.run(query)
+            app_logger.info(f'llm response: {response}')
             return response
     except Exception as e:
         app_logger.info(f'{__file__}: {e}')
