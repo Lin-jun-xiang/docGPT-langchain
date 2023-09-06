@@ -139,7 +139,7 @@ def get_response(query: str) -> str:
             'Something wrong in docGPT...\n'
             '1. If you are using gpt4free model, '
             'try to select the different provider. '
-            '(Or wait a moment, maybe there have something wrong in gpt4free)\n'
+            '(DeepAI, ChatgptAi are more stable)\n'
             '2. If you are using openai model, '
             'check your usage for openai api key.'
         )

@@ -220,7 +220,7 @@ class GPT4Free(LLM):
         'g4f.Provider.You': g4f.Provider.You,
         'g4f.Provider.Yqcloud': g4f.Provider.Yqcloud,
     }
-    provider = PROVIDER_MAPPING['g4f.Provider.ChatgptAi']
+    provider: str = 'g4f.Provider.ChatgptAi'
 
     @property
     def _llm_type(self) -> str:
@@ -233,11 +233,12 @@ class GPT4Free(LLM):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
     ) -> str:
         try:
-            print('promopt: ', prompt)
+            print(f'Promopt: {prompt}')
+            print(f'Provider: {self.PROVIDER_MAPPING[self.provider]}')
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
-                provider=self.provider
+                provider=self.PROVIDER_MAPPING[self.provider]
             )
         except Exception as e:
             print(f'{__file__}: {e}')

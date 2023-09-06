@@ -56,12 +56,7 @@ def create_doc_gpt(
                 return docGPT
         else:
             # Use gpt4free llm model without agent
-            llm_model = GPT4Free(
-                provider=GPT4Free().PROVIDER_MAPPING[
-                    g4f_provider
-                ]
-            )
-            print(GPT4Free().PROVIDER_MAPPING[g4f_provider])
+            llm_model = GPT4Free(provider=g4f_provider)
             docGPT.llm = llm_model
             docGPT.create_qa_chain(chain_type='refine')
             return docGPT
