@@ -40,7 +40,7 @@ If you like this project, please give it a ⭐`Star` to support the developers~
     - `openai`: Offers stable access by using an API key.
 
 <p align="center">
-<img src="static/img/2023-08-29-13-39-00.png" width="70%">
+<img src="static/img/2023-09-06-14-56-20.png" width="80%">
 </p>
 
 ---

@@ -42,7 +42,7 @@
     * `openai`: 通過 API 金鑰穩定調用 `openai` 模型
 
 <p align="center">
-<img src="static/img/2023-08-29-13-39-00.png" width="70%">
+<img src="static/img/2023-09-06-14-56-20.png" width="80%">
 </p>
 
 ---
