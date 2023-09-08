@@ -36,7 +36,7 @@ def create_doc_gpt(
             docGPT.llm = llm_model
             agent_.llm = llm_model
 
-            docGPT.create_qa_chain(chain_type='refine')
+            docGPT.create_qa_chain(chain_type='refine', verbose=False)
             docGPT_tool = agent_.create_doc_chat(docGPT)
             calculate_tool = agent_.get_calculate_chain
             llm_tool = agent_.create_llm_chain()
@@ -58,7 +58,7 @@ def create_doc_gpt(
             # Use gpt4free llm model without agent
             llm_model = GPT4Free(provider=g4f_provider)
             docGPT.llm = llm_model
-            docGPT.create_qa_chain(chain_type='refine')
+            docGPT.create_qa_chain(chain_type='refine', verbose=False)
             return docGPT
     except Exception as e:
         module_logger.info(f'{__file__}: {e}')

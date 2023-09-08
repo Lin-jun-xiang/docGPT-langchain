@@ -164,13 +164,14 @@ class DocGPT:
 
     def create_qa_chain(
         self,
-        chain_type: str='stuff',
+        chain_type: str ='stuff',
+        verbose: bool = True
     ) -> BaseQaChain:
         # TODO: Bug helper
         self._helper_prompt(chain_type)
         chain_type_kwargs = {
             'question_prompt': self.prompt,
-            'verbose': True,
+            'verbose': verbose,
             'refine_prompt': self.refine_prompt
         }
 
@@ -233,8 +234,8 @@ class GPT4Free(LLM):
         run_manager: Optional[CallbackManagerForLLMRun] = None,
     ) -> str:
         try:
-            print(f'Promopt: {prompt}')
-            print(f'Provider: {self.PROVIDER_MAPPING[self.provider]}')
+            # print(f'\033[36mPromopt: {prompt}\033[0m')
+            print(f'\033[36mProvider: {self.PROVIDER_MAPPING[self.provider]}\033[0m')
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],

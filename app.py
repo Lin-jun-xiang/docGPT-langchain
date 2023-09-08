@@ -126,12 +126,12 @@ def upload_and_process_pdf() -> list:
         return docs
 
 
-@lru_cache(maxsize=20)
 def get_response(query: str) -> str:
+    app_logger.info(f'\033[36mUser Query: {query}\033[0m')
     try:
         if model is not None:
             response = model.run(query)
-            app_logger.info(f'llm response: {response}')
+            app_logger.info(f'\033[36mLLM Response: {response}\033[0m')
             return response
     except Exception as e:
         app_logger.info(f'{__file__}: {e}')
