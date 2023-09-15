@@ -132,6 +132,14 @@ def get_response(query: str) -> str:
             response = model.run(query)
             app_logger.info(f'\033[36mLLM Response: {response}\033[0m')
             return response
+        return (
+            'Your model still not created.\n'
+            '1. If you are using gpt4free model, '
+            'try to re-select a provider. '
+            '(DeepAI, ChatgptAi are more stable)\n'
+            '2. If you are using openai model, '
+            'try to re-pass openai api key.'
+        )
     except Exception as e:
         app_logger.info(f'{__file__}: {e}')
         return (
