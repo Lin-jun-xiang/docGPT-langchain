@@ -136,7 +136,7 @@ def get_response(query: str) -> str:
             'Your model still not created.\n'
             '1. If you are using gpt4free model, '
             'try to re-select a provider. '
-            '(DeepAI, ChatgptAi are more stable)\n'
+            '(Ailis, DeepAi are more stable)\n'
             '2. If you are using openai model, '
             'try to re-pass openai api key.'
         )
@@ -146,7 +146,7 @@ def get_response(query: str) -> str:
             'Something wrong in docGPT...\n'
             '1. If you are using gpt4free model, '
             'try to select the different provider. '
-            '(DeepAI, ChatgptAi are more stable)\n'
+            '(Ailis, DeepAi are more stable)\n'
             '2. If you are using openai model, '
             'check your usage for openai api key.'
         )
