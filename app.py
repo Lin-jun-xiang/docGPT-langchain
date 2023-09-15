@@ -1,6 +1,5 @@
 import os
 import tempfile
-from functools import lru_cache
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 os.environ['SERPAPI_API_KEY'] = ''

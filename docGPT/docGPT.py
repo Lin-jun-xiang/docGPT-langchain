@@ -13,8 +13,10 @@ from langchain.llms.base import LLM
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
+from streamlit import logger
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
+module_logger = logger.get_logger(__name__)
 
 
 class BaseQaChain(ABC):
@@ -159,7 +161,7 @@ class DocGPT:
             documents=self.docs,
             embedding=embeddings
         )
-        print('embedded...')
+        module_logger.info('embedded...')
         return db
 
     def create_qa_chain(
@@ -190,7 +192,7 @@ class DocGPT:
         with get_openai_callback() as callback:
             if isinstance(self.qa_chain, RetrievalQA):
                 response = self.qa_chain.run(query)
-            print(callback)
+            module_logger.info(callback)
         return response
 
 
@@ -221,7 +223,7 @@ class GPT4Free(LLM):
         'g4f.Provider.You': g4f.Provider.You,
         'g4f.Provider.Yqcloud': g4f.Provider.Yqcloud,
     }
-    provider: str = 'g4f.Provider.ChatgptAi'
+    provider: str = 'g4f.Provider.DeepAi'
 
     @property
     def _llm_type(self) -> str:
@@ -235,11 +237,13 @@ class GPT4Free(LLM):
     ) -> str:
         try:
             # print(f'\033[36mPromopt: {prompt}\033[0m')
-            print(f'\033[36mProvider: {self.PROVIDER_MAPPING[self.provider]}\033[0m')
+            module_logger.info(
+                f'\033[36mProvider: {self.PROVIDER_MAPPING[self.provider]}\033[0m'
+            )
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
                 provider=self.PROVIDER_MAPPING[self.provider]
             )
         except Exception as e:
-            print(f'{__file__}: {e}')
+            module_logger.info(f'{__file__}: {e}')
