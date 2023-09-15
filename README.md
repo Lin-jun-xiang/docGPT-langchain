@@ -21,47 +21,21 @@
 
 If you like this project, please give it a ⭐`Star` to support the developers~
 
-### ✨What's new in version3?
+### 📚Introduction
 
-* Introduction of integration with `gpt4free`, **allowing users to use docGPT for free without needing to input API keys or make payments**.
+* Upload a PDF link from your local device (or a PDF link) and query `docGPT` about the content of the PDF. For example, you can ask GPT to summarize an article.
 
-- If you choose to use the `gpt4free` model, you only need to select the `Provider` (default is `g4f.provider.ChatgptAi`). For more details about `gpt4free`, refer to the [source project](https://github.com/xtekky/gpt4free).
-
-- Version 2:
-  - Uses the **`openai` model**.
-  - Requires an `openai_api_key`. You can obtain this key from the [link](https://platform.openai.com/).
-  - If you have a `serpapi_key`, AI responses can include Google search results.
-
-- Version 3:
-  - Retains all the features of Version 2.
-  - Introduces the **`gpt4free` model**, enabling completely free usage.
-  - Users can choose between `gpt4free` and `openai` models:
-    - `gpt4free`: Allows free access to OpenAI models through reverse engineering, but stability might be compromised.
-    - `openai`: Offers stable access by using an API key.
+* Provide two models:
+  * `gpt4free`
+    * **Completely free, allowing users to use the application without the need for API keys or payments.**
+    * Select the `Provider`. For more details about `gpt4free`, please refer to the [source project](https://github.com/xtekky/gpt4free).
+  * `openai`
+    * **Requires an `openai_api_key`, which you can obtain from [this link](https://platform.openai.com/).**
+    * If you have an `serpapi_key`, AI responses can include Google search results.
 
 <p align="center">
 <img src="static/img/2023-09-06-14-56-20.png" width="80%">
 </p>
-
----
-
-### 📚Introduction
-
-* Project Purpose:
-    * The purpose of this project is to create a powerful "LLM" model using LangChain and Streamlit. This model aims to **surpass the capabilities of ChatGPT** by enabling:
-      * **Connect with external data**, such as PDF documents, through RetrievalQA techniques for the model to understand uploaded files.
-      * Integrate LLM with other tools to achieve **internet connectivity**. exemplified by using **Serp API** for querying modern topics similar to **Google search**.
-      * Integration with **LLM Math** model for accurate mathematical computations.
-
-* This project consists of three main components:
-    * [`DataConnection`](../model/data_connection.py): Facilitates communication between LLM and external data, like reading PDF files. It also includes splitting large PDFs to avoid OpenAI's 4096 token limitation.
-    * [`docGPT`](../docGPT/):  The core element that helps the model understand PDF content. It involves embedding PDF text vectors and creating LangChain's retrievalQA model. For more details, refer to the [documentation](https://python.langchain.com/docs/modules/chains/popular/vector_db_qa).
-    * [`agent`](../agent/agent.py): Manages tools used by the model and automatically decides which tool to use based on user queries. Tools include:
-        * `SerpAI`: Used for modern topics, enabling Google search functionality.
-        * `llm_math_chain`: Used for mathematical calculations.
-        * `docGPT`: Used for answering queries related to PDF document content, designed using retrievalQA.
-
-* `docGPT` is developed based on **Langchain** and **Streamlit**.
 
 ---
 

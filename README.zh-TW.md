@@ -22,48 +22,20 @@
 
 如果您喜歡這個專案，請給予⭐`Star`以支持開發者~
 
+### 📚Introduction
 
-### ✨What's new in version3?
-
-* 引入 `gpt4free` 的調用，**"允許使用者在無需輸入 API 金鑰或付款的情況下使用該應用程序"**。
-
-* 若要使用 `gpt4free` 模型，只需選擇 `Provider` (默認是 `g4f.provider.ChatgptAi`)。有關 `gpt4free` 的更多詳細信息，請參閱[源專案](https://github.com/xtekky/gpt4free)。
-
-* Version2
-  * 使用 **`openai` 模型**
-  * 至少**須具備** `openai_api_key`，您可以從此[鏈接](https://platform.openai.com/)獲取金鑰
-  * 若具備 `serpapi_key`，AI 的回應可以包括 Google 搜索結果
-
-* Version3
-  * 保留 Version2 的所有功能
-  * 新增 **`gpt4free` 模型**，實現**完全免費**使用
-  * 使用者可以選擇 `gpt4free` 或 `openai` 模型:
-    * `gpt4free`: 透過逆向工程實現免費調用 openai，但不太穩定
-    * `openai`: 通過 API 金鑰穩定調用 `openai` 模型
+* 上傳來自本地的 PDF 連結 (或 PDF 連結)，並且向 `docGPT` 詢問有關 PDF 內容。例如: 您可以請 GPT 幫忙總結文章
+* 提供兩種模型選擇:
+  * `gpt4free`
+    * **完全免費，"允許使用者在無需輸入 API 金鑰或付款的情況下使用該應用程序"**
+    * 需選擇 `Provider`。有關 `gpt4free` 的更多詳細信息，請參閱[源專案](https://github.com/xtekky/gpt4free)
+  * `openai`
+    * **須具備** `openai_api_key`，您可以從此[鏈接](https://platform.openai.com/)獲取金鑰
+    * 若具備 `serpapi_key`，AI 的回應可以包括 Google 搜索結果
 
 <p align="center">
 <img src="static/img/2023-09-06-14-56-20.png" width="80%">
 </p>
-
----
-
-### 📚Introduction
-
-* 專案目的:
-    * 本項目的目標是使用 LangChain 和 Streamlit 創建一個強大的 "LLM" 模型。該模型能夠實現**超越 ChatGPT 的能力**，包括：
-      * 與**外部數據連接**，例如 PDF 文檔，使 LLM 能夠理解上傳的文件。
-      * 與其他工具集成，實現**互聯網連接**功能，例如使用 `Serp API` 進行**現代主題**的查詢，類似於 **Google 搜索**。
-      * 將 LLM 與 **LLM Math** 模型結合，實現準確的數學計算。
-
-* 本專案的設計架構主要有三個元素:
-    * [`DataConnection`](../model/data_connection.py): 促進 LLM 與外部數據的通信，例如讀取 PDF 文件。還包括將大型 PDF 拆分，以避免 OpenAI 的 4096 個令牌限制。
-    * [`docGPT`](../docGPT/): 核心元素，使模型理解 PDF 內容。包括嵌入 PDF 文本向量和創建 LangChain 的 retrievalQA 模型。更多詳細信息請參閱[文檔](https://python.langchain.com/docs/modules/chains/popular/vector_db_qa)
-    * [`agent`](../agent/agent.py): 管理模型使用的工具，根據用戶查詢**自動決定**使用哪個工具。工具包括:
-        * `SerpAI`: 對於現代話題，該工具實現了 Google 搜索。
-        * `llm_math_chain`: 數學計算。
-        * `docGPT`: 用於使用 retrievalQA 回答與 PDF 文檔相關的問題。
-
-* `docGPT` 是基於 **langchain** 與 **streamlit** 開發的
 
 ---
 
