@@ -22,6 +22,15 @@ model = None
 st.session_state.openai_api_key = None
 st.session_state.serpapi_api_key = None
 st.session_state.g4f_provider = None
+st.session_state.button_clicked = None
+
+
+if 'response' not in st.session_state:
+    st.session_state['response'] = ['How can I help you?']
+
+if 'query' not in st.session_state:
+    st.session_state['query'] = ['Hi']
+
 app_logger = logger.get_logger(__name__)
 
 
@@ -84,8 +93,21 @@ def load_api_key() -> None:
                 "#### Select a provider if you want to use free model. "
                 "([details](https://github.com/xtekky/gpt4free#models))"
             ),
-            (GPT4Free().PROVIDER_MAPPING.keys())
+            (GPT4Free().providers_table.keys())
         )
+
+        st.session_state.button_clicked = st.button(
+            'Show Available Providers',
+            help='Click to test which providers are currently available.',
+            type='primary'
+        )
+        if st.session_state.button_clicked:
+            available_providers = GPT4Free().find_available_providers()
+            st.session_state.query.append('What are the available providers right now?')
+            st.session_state.response.append(
+                'The current available providers are:\n'
+                f'{available_providers}'
+            )
 
 
 def upload_and_process_pdf() -> list:
@@ -128,7 +150,7 @@ def upload_and_process_pdf() -> list:
 def get_response(query: str) -> str:
     app_logger.info(f'\033[36mUser Query: {query}\033[0m')
     try:
-        if model is not None:
+        if model is not None and query:
             response = model.run(query)
             app_logger.info(f'\033[36mLLM Response: {response}\033[0m')
             return response
@@ -136,9 +158,10 @@ def get_response(query: str) -> str:
             'Your model still not created.\n'
             '1. If you are using gpt4free model, '
             'try to re-select a provider. '
-            '(Ailis, DeepAi are more stable)\n'
+            '(Click the "Show Available Providers" button in sidebar)\n'
             '2. If you are using openai model, '
-            'try to re-pass openai api key.'
+            'try to re-pass openai api key.\n'
+            '3. Or you did not pass the PDF file successfully.'
         )
     except Exception as e:
         app_logger.info(f'{__file__}: {e}')
@@ -146,7 +169,7 @@ def get_response(query: str) -> str:
             'Something wrong in docGPT...\n'
             '1. If you are using gpt4free model, '
             'try to select the different provider. '
-            '(Ailis, DeepAi are more stable)\n'
+            '(Click the "Show Available Providers" button in sidebar)\n'
             '2. If you are using openai model, '
             'check your usage for openai api key.'
         )
@@ -169,12 +192,6 @@ with doc_container:
         del docs
     st.write('---')
 
-if 'response' not in st.session_state:
-    st.session_state['response'] = ['How can I help you?']
-
-if 'query' not in st.session_state:
-    st.session_state['query'] = ['Hi']
-
 user_container = st.container()
 response_container = st.container()
 
@@ -184,7 +201,7 @@ with user_container:
         placeholder='Enter your question'
     )
 
-    if query and query != '':
+    if query and query != '' and not st.session_state.button_clicked:
         response = get_response(query)
         st.session_state.query.append(query)
         st.session_state.response.append(response) 

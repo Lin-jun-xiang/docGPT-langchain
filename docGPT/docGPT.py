@@ -197,26 +197,9 @@ class DocGPT:
 
 
 class GPT4Free(LLM):
-    PROVIDER_MAPPING = {
-        'g4f.Provider.AItianhu': g4f.Provider.AItianhu,
-        'g4f.Provider.Acytoo': g4f.Provider.Acytoo,
-        'g4f.Provider.Aichat': g4f.Provider.Aichat,
-        'g4f.Provider.Ails': g4f.Provider.Ails,
-        'g4f.Provider.Aivvm': g4f.Provider.Aivvm,
-        'g4f.Provider.ChatBase': g4f.Provider.ChatBase,
-        'g4f.Provider.ChatgptAi': g4f.Provider.ChatgptAi,
-        'g4f.Provider.ChatgptLogin': g4f.Provider.ChatgptLogin,
-        'g4f.Provider.DeepAi': g4f.Provider.DeepAi,
-        'g4f.Provider.Opchatgpts': g4f.Provider.Opchatgpts,
-        'g4f.Provider.OpenaiChat': g4f.Provider.OpenaiChat,
-        'g4f.Provider.Raycast': g4f.Provider.Raycast,
-        'g4f.Provider.Theb': g4f.Provider.Theb,
-        'g4f.Provider.Vercel': g4f.Provider.Vercel,
-        'g4f.Provider.Vitalentum': g4f.Provider.Vitalentum,
-        'g4f.Provider.Wewordle': g4f.Provider.Wewordle,
-        'g4f.Provider.Ylokh': g4f.Provider.Ylokh,
-        'g4f.Provider.You': g4f.Provider.You,
-        'g4f.Provider.Yqcloud': g4f.Provider.Yqcloud,
+    providers_table = {
+        f'g4f.Provider.{provider}': getattr(g4f.Provider, provider)
+        for provider in g4f.Provider.__all__
     }
     provider: str = 'g4f.Provider.DeepAi'
 
@@ -233,12 +216,38 @@ class GPT4Free(LLM):
         try:
             # print(f'\033[36mPromopt: {prompt}\033[0m')
             module_logger.info(
-                f'\033[36mProvider: {self.PROVIDER_MAPPING[self.provider]}\033[0m'
+                f'\033[36mProvider: {self.providers_table[self.provider]}\033[0m'
             )
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
-                provider=self.PROVIDER_MAPPING[self.provider]
+                provider=self.providers_table[self.provider]
             )
         except Exception as e:
             module_logger.info(f'{__file__}: {e}')
+
+    def _test_provider(self, provider: g4f.Provider) -> str:
+        try:
+            g4f.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": 'Hi, this is test'}],
+                provider=provider
+            )
+            return provider.__name__
+        except Exception as e:
+            print(e)
+            return
+
+    def find_available_providers(self) -> list:
+        """Test all the providers then find out which are available"""
+        from multiprocessing.dummy import Pool as ThreadPool
+
+        with ThreadPool(10) as pool:
+            available_providers = pool.map(
+                self._test_provider, self.providers_table.values()
+            )
+
+        return [
+            available_provider for available_provider in available_providers
+            if available_provider is not None
+        ]
