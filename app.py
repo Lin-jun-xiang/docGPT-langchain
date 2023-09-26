@@ -11,7 +11,7 @@ from streamlit import logger
 from streamlit_chat import message
 
 from docGPT import GPT4Free, create_doc_gpt
-from model import PDFLoader
+from model import DocumentLoader
 
 langchain.llm_cache = InMemoryCache()
 
@@ -46,9 +46,9 @@ def theme() -> None:
                 1. Enter your API keys: (You can choose to skip it and use the `gpt4free` free model)
                     * `OpenAI API Key`: Make sure you still have usage left
                     * `SERPAPI API Key`: Optional. If you want to ask questions about content not appearing in the PDF document, you need this key.
-                2. Upload a PDF file (choose one method):
-                    * method1: Browse and upload your own `.pdf` file from your local machine.
-                    * method2: Enter the PDF `URL` link directly.
+                2. Upload a Document file (choose one method):
+                    * method1: Browse and upload your own `.pdf or .docx` file from your local machine.
+                    * method2: Enter the PDF or DOCX `URL` link directly.
                 3. Start asking questions!
                 4. More details.(https://github.com/Lin-jun-xiang/docGPT-streamlit)
                 5. If you have any questions, feel free to leave comments and engage in discussions.(https://github.com/Lin-jun-xiang/docGPT-streamlit/issues)
@@ -110,35 +110,38 @@ def load_api_key() -> None:
             )
 
 
-def upload_and_process_pdf() -> list:
-    st.write('#### Upload a PDF file:')
+def upload_and_process_document() -> list:
+    st.write('#### Upload a Document file')
     browse, url_link = st.tabs(
-        ['Drag and drop file (Browse files)', 'Enter PDF URL link']
+        ['Drag and drop file (Browse files)', 'Enter document URL link']
     )
     with browse:
         upload_file = st.file_uploader(
-            'Browse file',
-            type='pdf',
+            'Browse file (.pdf, .docx)',
+            type=['pdf', 'docx'],
             label_visibility='hidden'
         )
         upload_file = upload_file.read() if upload_file else None
 
     with url_link:
-        pdf_url = st.text_input(
-            "Enter PDF URL Link",
+        doc_url = st.text_input(
+            "Enter document URL Link (.pdf, .docx)",
             placeholder='https://www.xxx/uploads/file.pdf',
             label_visibility='hidden'
         )
-        if pdf_url:
-            upload_file = PDFLoader.crawl_pdf_file(pdf_url)
+        if doc_url:
+            upload_file, filetype = DocumentLoader.crawl_file(doc_url)
 
     if upload_file:
         temp_file = tempfile.NamedTemporaryFile(delete=False)
         temp_file.write(upload_file)
         temp_file_path = temp_file.name
 
-        docs = PDFLoader.load_documents(temp_file_path)
-        docs = PDFLoader.split_documents(docs, chunk_size=2000, chunk_overlap=200)
+        docs = DocumentLoader.load_documents(temp_file_path, filetype)
+        docs = DocumentLoader.split_documents(
+            docs, chunk_size=2000,
+            chunk_overlap=200
+        )
 
         temp_file.close()
         if temp_file_path:
@@ -181,7 +184,7 @@ load_api_key()
 doc_container = st.container()
 
 with doc_container:
-    docs = upload_and_process_pdf()
+    docs = upload_and_process_document()
 
     if docs:
         model = create_doc_gpt(
@@ -189,6 +192,7 @@ with doc_container:
             {k: v for k, v in docs[0].metadata.items() if k not in ['source', 'file_path']},
             st.session_state.g4f_provider
         )
+        app_logger.info(f'{__file__}: Created model: {model}')
         del docs
     st.write('---')
 
