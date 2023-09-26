@@ -121,7 +121,7 @@ def upload_and_process_document() -> list:
             type=['pdf', 'docx'],
             label_visibility='hidden'
         )
-        filetype = os.path.splitext(upload_file.name)[1].lower()
+        filetype = os.path.splitext(upload_file.name)[1].lower() if upload_file else None
         upload_file = upload_file.read() if upload_file else None
 
     with url_link:
@@ -133,7 +133,7 @@ def upload_and_process_document() -> list:
         if doc_url:
             upload_file, filetype = DocumentLoader.crawl_file(doc_url)
 
-    if upload_file:
+    if upload_file and filetype:
         temp_file = tempfile.NamedTemporaryFile(delete=False)
         temp_file.write(upload_file)
         temp_file_path = temp_file.name
