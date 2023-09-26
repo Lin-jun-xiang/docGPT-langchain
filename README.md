@@ -26,7 +26,7 @@ If you like this project, please give it a ⭐`Star` to support the developers~
 
 ### 📚Introduction
 
-* Upload a PDF link from your local device (or a PDF link) and query `docGPT` about the content of the PDF. For example, you can ask GPT to summarize an article.
+* Upload a Document link from your local device (`.pdf` or `.docx`) and query `docGPT` about the content of the Document. For example, you can ask GPT to summarize an article.
 
 * Provide two models:
   * `gpt4free`
@@ -45,7 +45,8 @@ If you like this project, please give it a ⭐`Star` to support the developers~
 ### 🧨Features
 
 - **`gpt4free` Integration**: Everyone can use `docGPT` for **free** without needing an OpenAI API key.
-- **Direct PDF URL Input**: Users can input PDF `URL` links for parsing without uploading `.pdf` files.
+- **Support docx, pdf file**: Users can upload PDF or Word file.
+- **Direct Document URL Input**: Users can input Document `URL` links for parsing without uploading `.pdf` or `.docx` files.
 - **Langchain Agent**: Enables AI to answer current questions and achieve Google search-like functionality.
 - **User-Friendly Environment**: Easy-to-use interface for simple operations.
 
@@ -88,11 +89,11 @@ Through LangChain, you can create a universal AI model or tailor it for business
 
 2. 🔑Enter your `API_KEY` (optional in Version 3, as you can use the `gpt4free` free model):
    - `OpenAI API KEY`: Ensure you have available usage.
-   - `SERPAPI API KEY`: Required if you want to query content not present in the PDF.
+   - `SERPAPI API KEY`: Required if you want to query content not present in the Document.
 
-3. 📁Upload a PDF file (choose one method)
-    * Method 1: Browse and upload your own `.pdf` file from your local machine.
-    * Method 2: Enter the PDF `URL` link directly.
+3. 📁Upload a Document file (choose one method)
+    * Method 1: Browse and upload your own `.pdf` or `.docx` file from your local machine.
+    * Method 2: Enter the Document `URL` link directly.
 
 4. 🚀Start asking questions!
 
