@@ -14,7 +14,7 @@ os.environ['SERPAPI_API_KEY'] = os.getenv('SERPAPI_API_KEY')
 module_logger = logger.get_logger(__name__)
 
 
-@st.cache_resource(ttl=1800, max_entries=5)
+@st.cache_resource(ttl=1200, max_entries=3)
 def create_doc_gpt(
     _docs: list,
     doc_metadata: str,
