@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  docgpt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8501:8501'

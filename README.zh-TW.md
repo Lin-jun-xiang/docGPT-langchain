@@ -7,8 +7,8 @@
 歡迎來到 `docGPT` 使用指南。本指南將帶您深入了解 `docGPT` 的功能和用法，並讓您親自搭建一個屬於自己的應用程式。
 
 - 目錄
-    - [What's new in version3?](#whats-new-in-version3)
     - [Introduction](#introduction)
+    - [Features](#🧨features)
     - [What's LangChain?](#whats-langchain)
     - [How to Use docGPT?](#how-to-use-docgpt)
     - [How to develope a docGPT with streamlit?](#how-to-develope-a-docgpt-with-streamlit)
@@ -104,18 +104,41 @@ LangChain 填補了 ChatGPT 的不足之處。通過以下示例，您可以理�
 
 首先請進行 `git clone https://github.com/Lin-jun-xiang/docGPT-streamlit.git`
 
-方法有如下兩種:
+方法有如下幾種方法:
 
-* 於**本地開發方式**
-    * `pip install -r requirements.txt`: 下載開發需求套件
-    * `streamlit run ./app.py`: 於專案根目錄啟動服務
-    * 開始體驗!
+* 於**本地開發方式(不使用docker)**:
+    * 下載開發需求套件
+        ```
+        pip install -r requirements.txt
+        ```
+
+    * 於專案根目錄啟動服務
+        ```
+        streamlit run ./app.py
+        ```
+
+    * 開始體驗! 您的服務會運行在 `http://localhost:8501`.
+
+* 於**本地開發方式(使用docker)**:
+    * 使用 Docker Compose 啟動服務
+        ```
+        docker-compose up
+        ```
+
+        您的服務會運行在 `http://localhost:8501`. 您可以開始使用 `docGPT` 應用程序
+    
+    * 停止服務運行
+        ```
+        docker-compose down
+        ```
 
 * 使用 Streamlit Community **Cloud 免費部屬**、管理和共享應用程序
     * 將您的應用程序放在公共 GitHub 存儲庫中（確保有 `requirements.txt`！）
     * 登錄[share.streamlit.io](https://share.streamlit.io/)
     * 單擊“部署應用程序”，然後粘貼您的 GitHub URL
     * 完成部屬[應用程序](https://docgpt-app.streamlit.app//)
+
+由於 `docGPT` 是使用 streamlit cloud 免費版部屬，受限於設備關係會有不少延遲，建議使用者可以使用本地部屬方式來體驗。
 
 ---
 

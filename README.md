@@ -5,9 +5,12 @@
 
 [English](./README.md) | [中文版](./README.zh-TW.md)
 
+Welcome to the `docGPT` User Guide. This guide will take you through the features and usage of docGPT, and walk you through building your own application.
+
+
 - Table of Contents
-    - [What's new in version3?](#whats-new-in-version3)
     - [Introduction](#introduction)
+    - [Features](#🧨features)
     - [What's LangChain?](#whats-langchain)
     - [How to Use docGPT?](#how-to-use-docgpt)
     - [How to Develop a docGPT with Streamlit?](#how-to-develop-a-docgpt-with-streamlit)
@@ -103,18 +106,41 @@ A step-by-step tutorial to quickly build your own chatGPT!
 
 First, clone the repository using `git clone https://github.com/Lin-jun-xiang/docGPT-streamlit.git`.
 
-There are two methods:
+There are few methods:
 
-* **Local development**:
-    * `pip install -r requirements.txt`: Download the required packages for development.
-    * `streamlit run ./app.py`: Start the service in the project's root directory.
-    * Start exploring!
+* **Local development without docker**:
+    * Download the required packages for development.
+        ```
+        pip install -r requirements.txt
+        ```
 
-* Use Streamlit Community **Cloud for free** deployment, management, and sharing of applications:
+    * Start the service in the project's root directory.
+        ```
+        streamlit run ./app.py
+        ```
+
+    * Start exploring! You server will now be running at `http://localhost:8501`.
+
+* **Local development with docker**:
+    * Start the service using Docker Compose
+        ```
+        docker-compose up
+        ```
+
+        You server will now be running at `http://localhost:8501`. You can interact with the `docGPT` or run your tests as you would normally.
+    
+    * To stop the Docker containers, simply run:
+        ```
+        docker-compose down
+        ```
+
+* **Streamlit Community Cloud for free** deployment, management, and sharing of applications:
    - Place your application in a public GitHub repository (ensure you have `requirements.txt`).
    - Log in to [share.streamlit.io](https://share.streamlit.io/).
    - Click "Deploy an App," then paste your GitHub URL.
    - Complete deployment and share your [application](https://docgpt-app.streamlit.app//).
+
+Due to the limitations of the free version of Streamlit Cloud and its reliance on server resources, `docGPT` may experience some latency. We recommend users to consider deploying it locally for a smoother experience
 
 ---
 
