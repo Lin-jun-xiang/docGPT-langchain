@@ -1,3 +1,4 @@
+import asyncio
 import os
 from abc import ABC, abstractmethod
 from typing import List, Optional
@@ -226,26 +227,25 @@ class GPT4Free(LLM):
         except Exception as e:
             module_logger.info(f'{__file__}: {e}')
 
-    def _test_provider(self, provider: g4f.Provider) -> str:
+    async def _test_provider(self, provider: g4f.Provider) -> str:
+        provider_name = provider.__name__
         try:
-            g4f.ChatCompletion.create(
+            await g4f.ChatCompletion.create_async(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": 'Hi, this is test'}],
                 provider=provider
             )
-            return provider.__name__
+            return provider_name
         except Exception as e:
-            print(e)
-            return
+            print(f'{provider_name}: {e}')
 
-    def find_available_providers(self) -> list:
+    async def show_available_providers(self) -> list:
         """Test all the providers then find out which are available"""
-        from multiprocessing.dummy import Pool as ThreadPool
-
-        with ThreadPool(10) as pool:
-            available_providers = pool.map(
-                self._test_provider, self.providers_table.values()
-            )
+        tasks = [
+            self._test_provider(provider)
+            for provider in self.providers_table.values()    
+        ]
+        available_providers = await asyncio.gather(*tasks)
 
         return [
             available_provider for available_provider in available_providers

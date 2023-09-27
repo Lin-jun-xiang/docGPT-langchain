@@ -1,3 +1,4 @@
+import asyncio
 import os
 import tempfile
 
@@ -88,12 +89,13 @@ def load_api_key() -> None:
         os.environ['SERPAPI_API_KEY'] = SERPAPI_API_KEY
 
     with st.sidebar:
+        gpt4free = GPT4Free()
         st.session_state.g4f_provider = st.selectbox(
             (
                 "#### Select a provider if you want to use free model. "
                 "([details](https://github.com/xtekky/gpt4free#models))"
             ),
-            (GPT4Free().providers_table.keys())
+            (gpt4free.providers_table.keys())
         )
 
         st.session_state.button_clicked = st.button(
@@ -102,7 +104,7 @@ def load_api_key() -> None:
             type='primary'
         )
         if st.session_state.button_clicked:
-            available_providers = GPT4Free().find_available_providers()
+            available_providers = asyncio.run(gpt4free.show_available_providers())
             st.session_state.query.append('What are the available providers right now?')
             st.session_state.response.append(
                 'The current available providers are:\n'
