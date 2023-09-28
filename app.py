@@ -5,16 +5,12 @@ import tempfile
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 os.environ['SERPAPI_API_KEY'] = ''
 
-import langchain
 import streamlit as st
-from langchain.cache import InMemoryCache
 from streamlit import logger
 from streamlit_chat import message
 
 from docGPT import GPT4Free, create_doc_gpt
 from model import DocumentLoader
-
-langchain.llm_cache = InMemoryCache()
 
 OPENAI_API_KEY = ''
 SERPAPI_API_KEY = ''

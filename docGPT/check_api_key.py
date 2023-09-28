@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 
 import openai
 import streamlit as st
-from langchain import SerpAPIWrapper
 
 
 class ApiKey(ABC):
@@ -45,6 +44,7 @@ class SerpAPI(ApiKey):
         if not st.session_state['serpapi_api_key']:
             st.warning('⚠️ You have not pass SerpAPI key. (You cannot ask current events.)')
             return
+        from langchain import SerpAPIWrapper
 
         os.environ['SERPAPI_API_KEY'] = os.getenv('SERPAPI_API_KEY')
         try:

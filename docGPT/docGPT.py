@@ -7,11 +7,10 @@ import g4f
 import openai
 from langchain.callbacks import get_openai_callback
 from langchain.callbacks.manager import CallbackManagerForLLMRun
-from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from langchain.chains import RetrievalQA
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.llms.base import LLM
-from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 from langchain.vectorstores import FAISS
 from streamlit import logger
@@ -68,8 +67,11 @@ class CRChain(BaseQaChain):
         super().__init__(chain_type, retriever, llm)
 
     @property
-    def create_qa_chain(self) -> ConversationalRetrievalChain:
+    def create_qa_chain(self):
         # TODO: cannot use conversation qa chain
+        from langchain.chains import ConversationalRetrievalChain
+        from langchain.memory import ConversationBufferMemory
+
         memory = ConversationBufferMemory(
             memory_key='chat_history',
             return_messages=True

@@ -2,7 +2,6 @@ import os
 from typing import Optional
 
 import openai
-from langchain import LLMMathChain, SerpAPIWrapper
 from langchain.agents import AgentType, Tool, initialize_agent
 from langchain.callbacks import get_openai_callback
 from langchain.chains import LLMChain
@@ -29,6 +28,8 @@ class AgentHelper:
 
     @property
     def get_calculate_chain(self) -> Tool:
+        from langchain import LLMMathChain
+
         llm_math_chain = LLMMathChain.from_llm(llm=self.llm, verbose=True)
         tool = Tool(
             name='Calculator',
@@ -39,6 +40,8 @@ class AgentHelper:
 
     @property
     def get_searp_chain(self) -> Tool:
+        from langchain import SerpAPIWrapper
+
         search = SerpAPIWrapper()
         tool = Tool(
             name='Search',

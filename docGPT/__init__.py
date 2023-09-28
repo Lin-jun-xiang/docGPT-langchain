@@ -39,7 +39,7 @@ def create_doc_gpt(
             docGPT.create_qa_chain(chain_type='refine', verbose=False)
             docGPT_tool = agent_.create_doc_chat(docGPT)
             calculate_tool = agent_.get_calculate_chain
-            llm_tool = agent_.create_llm_chain()
+            # llm_tool = agent_.create_llm_chain()
 
             if SerpAPI.is_valid():
                 search_tool = agent_.get_searp_chain
