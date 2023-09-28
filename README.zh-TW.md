@@ -4,7 +4,9 @@
 
 [English](./README.md) | [中文版](./README.zh-TW.md)
 
-歡迎來到 `docGPT` 使用指南。本指南將帶您深入了解 `docGPT` 的功能和用法，並讓您親自搭建一個屬於自己的應用程式。
+免費的`docGPT`允許您與您的文件 (`.pdf`, `.docx`, `.csv`) 進行對話，無需任何金鑰或費用。
+
+此外，您也可以根據該文件操作，將程序部屬在任何地方。
 
 - 目錄
     - [Introduction](#introduction)
@@ -24,7 +26,7 @@
 
 ### 📚Introduction
 
-* 上傳來自本地的 Document 連結 (`.pdf` or `.docx`)，並且向 `docGPT` 詢問有關 Document 內容。例如: 您可以請 GPT 幫忙總結文章
+* 上傳來自本地的 Document 連結 (`.pdf`, `.docx`, `.csv`)，並且向 `docGPT` 詢問有關 Document 內容。例如: 您可以請 GPT 幫忙總結文章
 * 提供兩種模型選擇:
   * `gpt4free`
     * **完全免費，"允許使用者在無需輸入 API 金鑰或付款的情況下使用該應用程序"**
@@ -43,7 +45,7 @@
 
 - **`gpt4free` 整合**：任何人都可以免費使用 GPT4，無需輸入 OpenAI API 金鑰。
 - **支援 docx, pdf 檔案**: 可以上傳 PDF or Word 檔
-- **直接輸入 Document 網址**：使用者可以直接輸入 Document 網址進行解析，無需從本地上傳 `.pdf` or `.docx` 檔案。
+- **直接輸入 Document 網址**：使用者可以直接輸入 Document 網址進行解析，無需從本地上傳 `.pdf`, `.docx` or `.csv` 檔案。
 - **Langchain Agent**：AI 能夠回答當前問題，實現類似 Google 搜尋功能。
 - **簡易操作環境**：友善的界面，操作簡便
 
@@ -90,7 +92,7 @@ LangChain 填補了 ChatGPT 的不足之處。通過以下示例，您可以理�
     * `SERPAPI API KEY`: 如果您要查詢 Document 中不存在的內容，則需要使用此金鑰。
 
 3. 📁上傳來自本地的 Document 檔案 (選擇一個方法)
-    * 方法一: 從本地機瀏覽並上傳自己的 `.pdf` or `.docx` 檔
+    * 方法一: 從本地機瀏覽並上傳自己的 `.pdf`, `.docx` or `.csv` 檔
     * 方法二: 輸入 Document URL 連結
 
 4. 🚀開始提問 ! 

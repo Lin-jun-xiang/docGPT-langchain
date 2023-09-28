@@ -3,7 +3,7 @@ from typing import Iterator, Union
 
 import requests
 import streamlit as st
-from langchain.document_loaders import Docx2txtLoader, PyMuPDFLoader
+from langchain.document_loaders import CSVLoader, Docx2txtLoader, PyMuPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
@@ -22,18 +22,24 @@ class DocumentLoader:
     def load_documents(
         file: str,
         filetype: str = '.pdf'
-    ) -> Union[Docx2txtLoader, PyMuPDFLoader]:
-        """Loading PDF or Docx"""
-        if filetype == '.pdf':
-            loader = PyMuPDFLoader(file)
-        elif filetype == '.docx':
-            loader = Docx2txtLoader(file)
+    ) -> Union[CSVLoader, Docx2txtLoader, PyMuPDFLoader]:
+        """Loading PDF, Docx, CSV"""
+        try:
+            if filetype == '.pdf':
+                loader = PyMuPDFLoader(file)
+            elif filetype == '.docx':
+                loader = Docx2txtLoader(file)
+            elif filetype == '.csv':
+                loader = CSVLoader(file, encoding='utf-8')
 
-        return loader.load()
+            return loader.load()
+        except Exception as e:
+            print(f'\033[31m{e}')
+            return []
 
     @staticmethod
     def split_documents(
-        document: Union[Docx2txtLoader, PyMuPDFLoader],
+        document: Union[CSVLoader, Docx2txtLoader, PyMuPDFLoader],
         chunk_size: int=2000,
         chunk_overlap: int=0
     ) -> list:
@@ -53,6 +59,6 @@ class DocumentLoader:
                 '.pdf' in filetype or '.docx' in filetype):
                 return response.content, filetype
             else:
-                st.warning('Url cannot parse to PDF or DOCX')
+                st.warning('Url cannot parse correctly.')
         except:
-            st.warning('Url cannot parse to PDF or DOCX')
+            st.warning('Url cannot parse correctly.')

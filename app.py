@@ -40,7 +40,6 @@ def theme() -> None:
     st.image('./static/img/repos_logo.png', width=250)
 
     with st.sidebar:
-
         with st.expander(':orange[How to use?]'):
             st.markdown(
                 """
@@ -113,14 +112,14 @@ def load_api_key() -> None:
 
 
 def upload_and_process_document() -> list:
-    st.write('#### Upload a Document file')
+    st.write('#### Upload a Document file (PDF, DOCX, CSV)')
     browse, url_link = st.tabs(
         ['Drag and drop file (Browse files)', 'Enter document URL link']
     )
     with browse:
         upload_file = st.file_uploader(
-            'Browse file (.pdf, .docx)',
-            type=['pdf', 'docx'],
+            'Browse file (.pdf, .docx, .csv)',
+            type=['pdf', 'docx', 'csv'],
             label_visibility='hidden'
         )
         filetype = os.path.splitext(upload_file.name)[1].lower() if upload_file else None
@@ -128,7 +127,7 @@ def upload_and_process_document() -> list:
 
     with url_link:
         doc_url = st.text_input(
-            "Enter document URL Link (.pdf, .docx)",
+            "Enter document URL Link (.pdf, .docx, .csv)",
             placeholder='https://www.xxx/uploads/file.pdf',
             label_visibility='hidden'
         )
@@ -167,7 +166,8 @@ def get_response(query: str) -> str:
             '(Click the "Show Available Providers" button in sidebar)\n'
             '2. If you are using openai model, '
             'try to re-pass openai api key.\n'
-            '3. Or you did not pass the PDF file successfully.'
+            '3. Or you did not pass the file successfully.\n'
+            '4. Try to Refresh the page (F5).'
         )
     except Exception as e:
         app_logger.info(f'{__file__}: {e}')
