@@ -41,6 +41,8 @@ def create_doc_gpt(
             calculate_tool = agent_.get_calculate_chain
             # llm_tool = agent_.create_llm_chain()
 
+            module_logger.info('\033[43mUsing OpenAI model...\033[0m')
+
             if SerpAPI.is_valid():
                 search_tool = agent_.get_searp_chain
 
@@ -59,6 +61,7 @@ def create_doc_gpt(
             llm_model = GPT4Free(provider=g4f_provider)
             docGPT.llm = llm_model
             docGPT.create_qa_chain(chain_type='refine', verbose=False)
+            module_logger.info('\033[43mUsing Gpt4free model...\033[0m')
             return docGPT
     except Exception as e:
         print(e)
