@@ -39,12 +39,14 @@ def theme() -> None:
         with st.expander(':orange[How to use?]'):
             st.markdown(
                 """
-                1. Enter your API keys: (You can choose to skip it and use the `gpt4free` free model)
+                1. Enter your API keys: (You can use the `gpt4free` free model **without API keys**)
                     * `OpenAI API Key`: Make sure you still have usage left
                     * `SERPAPI API Key`: Optional. If you want to ask questions about content not appearing in the PDF document, you need this key.
-                2. Upload a Document file (choose one method):
-                    * method1: Browse and upload your own `.pdf or .docx` file from your local machine.
-                    * method2: Enter the PDF or DOCX `URL` link directly.
+                2. **Upload a Document** file (choose one method):
+                    * method1: Browse and upload your own document file from your local machine.
+                    * method2: Enter the document URL link directly.
+                    
+                    (**support documents**: `.pdf`, `.docx`, `.csv`, `.txt`)
                 3. Start asking questions!
                 4. More details.(https://github.com/Lin-jun-xiang/docGPT-streamlit)
                 5. If you have any questions, feel free to leave comments and engage in discussions.(https://github.com/Lin-jun-xiang/docGPT-streamlit/issues)
@@ -108,14 +110,14 @@ def load_api_key() -> None:
 
 
 def upload_and_process_document() -> list:
-    st.write('#### Upload a Document file (PDF, DOCX, CSV)')
+    st.write('#### Upload a Document file')
     browse, url_link = st.tabs(
         ['Drag and drop file (Browse files)', 'Enter document URL link']
     )
     with browse:
         upload_file = st.file_uploader(
-            'Browse file (.pdf, .docx, .csv)',
-            type=['pdf', 'docx', 'csv'],
+            'Browse file (.pdf, .docx, .csv, `.txt`)',
+            type=['pdf', 'docx', 'csv', 'txt'],
             label_visibility='hidden'
         )
         filetype = os.path.splitext(upload_file.name)[1].lower() if upload_file else None
@@ -123,7 +125,7 @@ def upload_and_process_document() -> list:
 
     with url_link:
         doc_url = st.text_input(
-            "Enter document URL Link (.pdf, .docx, .csv)",
+            "Enter document URL Link (.pdf, .docx, .csv, .txt)",
             placeholder='https://www.xxx/uploads/file.pdf',
             label_visibility='hidden'
         )

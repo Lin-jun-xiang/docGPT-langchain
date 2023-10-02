@@ -3,7 +3,12 @@ from typing import Iterator, Union
 
 import requests
 import streamlit as st
-from langchain.document_loaders import CSVLoader, Docx2txtLoader, PyMuPDFLoader
+from langchain.document_loaders import (
+    CSVLoader,
+    Docx2txtLoader,
+    PyMuPDFLoader,
+    TextLoader,
+)
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
@@ -22,7 +27,7 @@ class DocumentLoader:
     def load_documents(
         file: str,
         filetype: str = '.pdf'
-    ) -> Union[CSVLoader, Docx2txtLoader, PyMuPDFLoader]:
+    ) -> Union[CSVLoader, Docx2txtLoader, PyMuPDFLoader, TextLoader]:
         """Loading PDF, Docx, CSV"""
         try:
             if filetype == '.pdf':
@@ -31,15 +36,18 @@ class DocumentLoader:
                 loader = Docx2txtLoader(file)
             elif filetype == '.csv':
                 loader = CSVLoader(file, encoding='utf-8')
+            elif filetype == '.txt':
+                loader = TextLoader(file, encoding='utf-8')
 
             return loader.load()
+
         except Exception as e:
             print(f'\033[31m{e}')
             return []
 
     @staticmethod
     def split_documents(
-        document: Union[CSVLoader, Docx2txtLoader, PyMuPDFLoader],
+        document: Union[CSVLoader, Docx2txtLoader, PyMuPDFLoader, TextLoader],
         chunk_size: int=2000,
         chunk_overlap: int=0
     ) -> list:

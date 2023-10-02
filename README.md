@@ -5,7 +5,7 @@
 
 [English](./README.md) | [中文版](./README.zh-TW.md)
 
-Free `docGPT` allows you to chat with your documents (`.pdf`, `.docx`, `.csv`), without the need for any keys or fees.
+Free `docGPT` allows you to chat with your documents (`.pdf`, `.docx`, `.csv`, `.txt`), without the need for any keys or fees.
 
 Additionally, you can deploy the app anywhere based on the document.
 
@@ -27,7 +27,7 @@ If you like this project, please give it a ⭐`Star` to support the developers~
 
 ### 📚Introduction
 
-* Upload a Document link from your local device (`.pdf`, `.docx`, `.csv`) and query `docGPT` about the content of the Document. For example, you can ask GPT to summarize an article.
+* Upload a Document link from your local device (`.pdf`, `.docx`, `.csv`, `.txt`) and query `docGPT` about the content of the Document. For example, you can ask GPT to summarize an article.
 
 * Provide two models:
   * `gpt4free`
@@ -46,8 +46,8 @@ If you like this project, please give it a ⭐`Star` to support the developers~
 ### 🧨Features
 
 - **`gpt4free` Integration**: Everyone can use `docGPT` for **free** without needing an OpenAI API key.
-- **Support docx, pdf file**: Users can upload PDF or Word file.
-- **Direct Document URL Input**: Users can input Document `URL` links for parsing without uploading `.pdf`, `.docx` or `.csv` files.
+- **Support docx, pdf, csv, txt file**: Users can upload PDF, Word, CSV, txt file.
+- **Direct Document URL Input**: Users can input Document `URL` links for parsing without uploading document files(see the demo).
 - **Langchain Agent**: Enables AI to answer current questions and achieve Google search-like functionality.
 - **User-Friendly Environment**: Easy-to-use interface for simple operations.
 
@@ -93,7 +93,7 @@ Through LangChain, you can create a universal AI model or tailor it for business
    - `SERPAPI API KEY`: Required if you want to query content not present in the Document.
 
 3. 📁Upload a Document file (choose one method)
-    * Method 1: Browse and upload your own `.pdf`, `.docx` or `.csv` file from your local machine.
+    * Method 1: Browse and upload your own `.pdf`, `.docx`, `.csv`, `.txt` file from your local machine.
     * Method 2: Enter the Document `URL` link directly.
 
 4. 🚀Start asking questions!
