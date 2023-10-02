@@ -64,7 +64,8 @@ class DocumentLoader:
             response = requests.get(url)
             filetype = os.path.splitext(url)[1]
             if response.status_code == 200 and (
-                '.pdf' in filetype or '.docx' in filetype):
+                any(ext in filetype for ext in ['.pdf', '.docx', '.csv', '.txt'])
+            ):
                 return response.content, filetype
             else:
                 st.warning('Url cannot parse correctly.')
