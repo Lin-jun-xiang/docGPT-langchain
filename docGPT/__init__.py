@@ -63,6 +63,7 @@ def create_doc_gpt(
             docGPT.create_qa_chain(chain_type='refine', verbose=False)
             module_logger.info('\033[43mUsing Gpt4free model...\033[0m')
             return docGPT
+
     except Exception as e:
         print(e)
         module_logger.info(f'{__file__}: {e}')

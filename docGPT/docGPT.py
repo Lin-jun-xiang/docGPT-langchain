@@ -219,15 +219,15 @@ class GPT4Free(LLM):
         try:
             # print(f'\033[36mPromopt: {prompt}\033[0m')
             module_logger.info(
-                f'\033[36mProvider: {self.providers_table[self.provider]}\033[0m'
+                f'\033[36mProvider: {self.providers_table.get(self.provider, None)}\033[0m'
             )
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
-                provider=self.providers_table[self.provider]
+                provider=self.providers_table.get(self.provider, None)
             )
         except Exception as e:
-            module_logger.info(f'{__file__}: {e}')
+            module_logger.info(f'{__file__}: call gpt4free error - {e}')
 
     async def _test_provider(self, provider: g4f.Provider) -> str:
         provider_name = provider.__name__

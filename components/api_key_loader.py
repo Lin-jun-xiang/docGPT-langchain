@@ -44,7 +44,7 @@ def load_api_key() -> None:
                 "#### Select a provider if you want to use free model. "
                 "([details](https://github.com/xtekky/gpt4free#models))"
             ),
-            (gpt4free.providers_table.keys())
+            (['BestProvider'] + list(gpt4free.providers_table.keys()))
         )
 
         st.session_state.button_clicked = st.button(
