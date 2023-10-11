@@ -1,4 +1,4 @@
-g4f==0.1.4.5
+g4f
 langchain==0.0.218
 openai==0.27.8
 streamlit==1.26.0

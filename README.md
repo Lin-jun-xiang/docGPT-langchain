@@ -100,6 +100,9 @@ Through LangChain, you can create a universal AI model or tailor it for business
 
 ![docGPT](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/static/img/docGPT.gif?raw=true)
 
+> [!WARNING]
+> Due to resource limitations in the free version of Streamlit Cloud, the application may experience crashes when used by multiple users simultaneously ([Oh no!](https://github.com/Lin-jun-xiang/docGPT-langchain/issues/2)). If you encounter this problem, feel free to report it in the issue tracker, and the developers will restart the application.
+
 ---
 
 ### 🧠How to Develop a docGPT with Streamlit?

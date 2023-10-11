@@ -218,13 +218,14 @@ class GPT4Free(LLM):
     ) -> str:
         try:
             # print(f'\033[36mPromopt: {prompt}\033[0m')
+            provider = self.providers_table.get(self.provider, None)
             module_logger.info(
-                f'\033[36mProvider: {self.providers_table.get(self.provider, None)}\033[0m'
+                f'\033[36mProvider: {provider}\033[0m'
             )
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
-                provider=self.providers_table.get(self.provider, None)
+                provider=provider
             )
         except Exception as e:
             module_logger.info(f'{__file__}: call gpt4free error - {e}')

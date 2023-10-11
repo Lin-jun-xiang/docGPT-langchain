@@ -7,8 +7,8 @@ import streamlit as st
 from streamlit import logger
 from streamlit_chat import message
 
-from docGPT import create_doc_gpt
 from components import get_response, load_api_key, theme, upload_and_process_document
+from docGPT import create_doc_gpt
 
 OPENAI_API_KEY = ''
 SERPAPI_API_KEY = ''

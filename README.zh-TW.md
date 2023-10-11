@@ -99,6 +99,10 @@ LangChain 填補了 ChatGPT 的不足之處。通過以下示例，您可以理�
 
 ![RGB_cleanup](https://github.com/Lin-jun-xiang/docGPT-streamlit/blob/main/static/img/docGPT.gif?raw=true)
 
+> [!WARNING]
+> 由於免費版 streamlit cloud 資源限制，該程序在多人同時使用時，容易引發崩潰([Oh no!](https://github.com/Lin-jun-xiang/docGPT-langchain/issues/2))，若遇上該問題歡迎到 Issue 提醒開發者，開發者會重啟程序。
+
+
 ---
 
 ### 🧠How to develope a docGPT with streamlit?
