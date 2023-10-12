@@ -6,7 +6,25 @@ import streamlit as st
 from docGPT import GPT4Free
 
 
-def load_api_key() -> None:
+def side_bar() -> None:
+    with st.sidebar:
+        with st.expander(':orange[How to use?]'):
+            st.markdown(
+                """
+                1. Enter your API keys: (You can use the `gpt4free` free model **without API keys**)
+                    * `OpenAI API Key`: Make sure you still have usage left
+                    * `SERPAPI API Key`: Optional. If you want to ask questions about content not appearing in the PDF document, you need this key.
+                2. **Upload a Document** file (choose one method):
+                    * method1: Browse and upload your own document file from your local machine.
+                    * method2: Enter the document URL link directly.
+                    
+                    (**support documents**: `.pdf`, `.docx`, `.csv`, `.txt`)
+                3. Start asking questions!
+                4. More details.(https://github.com/Lin-jun-xiang/docGPT-streamlit)
+                5. If you have any questions, feel free to leave comments and engage in discussions.(https://github.com/Lin-jun-xiang/docGPT-streamlit/issues)
+                """
+            )
+
     with st.sidebar:
         if st.session_state.openai_api_key:
             OPENAI_API_KEY = st.session_state.openai_api_key

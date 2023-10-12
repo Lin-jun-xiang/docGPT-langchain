@@ -7,7 +7,7 @@ import streamlit as st
 from streamlit import logger
 from streamlit_chat import message
 
-from components import get_response, load_api_key, theme, upload_and_process_document
+from components import get_response, side_bar, theme, upload_and_process_document
 from docGPT import create_doc_gpt
 
 OPENAI_API_KEY = ''
@@ -32,7 +32,7 @@ app_logger = logger.get_logger(__name__)
 def main():
     global model
     theme()
-    load_api_key()
+    side_bar()
 
     doc_container = st.container()
     with doc_container:
