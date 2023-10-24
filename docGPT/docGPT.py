@@ -236,7 +236,8 @@ class GPT4Free(LLM):
             await g4f.ChatCompletion.create_async(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": 'Hi, this is test'}],
-                provider=provider
+                provider=provider,
+                ignored=["ChatBase"]
             )
             return provider_name
         except Exception as e:
