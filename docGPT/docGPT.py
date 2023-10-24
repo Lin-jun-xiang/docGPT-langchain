@@ -225,7 +225,8 @@ class GPT4Free(LLM):
             return g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": prompt}],
-                provider=provider
+                provider=provider,
+                ignored=["ChatBase"]
             )
         except Exception as e:
             module_logger.info(f'{__file__}: call gpt4free error - {e}')
@@ -236,7 +237,8 @@ class GPT4Free(LLM):
             await g4f.ChatCompletion.create_async(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": 'Hi, this is test'}],
-                provider=provider
+                provider=provider,
+                ignored=["ChatBase"]
             )
             return provider_name
         except Exception as e:
