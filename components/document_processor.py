@@ -9,7 +9,7 @@ from model import DocumentLoader
 def upload_and_process_document() -> list:
     st.write('#### Upload a Document file')
     browse, url_link = st.tabs(
-        ['Drag and drop file (Browse files)', 'Enter document URL link']
+        ['拖放文件 (浏览文件)', '输入文档 URL链接']
     )
     with browse:
         upload_file = st.file_uploader(
