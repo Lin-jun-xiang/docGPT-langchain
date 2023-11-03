@@ -16,4 +16,4 @@ COPY . /app
 EXPOSE 8501
 
 # Define the default command to run the app using Python's module mode.
-CMD ['streamlit', "run", "app.py"]
+CMD ["streamlit", "run", "app.py"]
